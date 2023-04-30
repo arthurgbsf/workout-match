@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Workout Match",
-    "description": "Create, copy and shared custom workouts and exercises between users.",
+    "description": "Workout Match is an API for creating and managing customized exercises and workouts. With this API, you can create exercises with sets, reps, and exercise classification (type), as well as group them into workouts that can have a defined difficulty level. Additionally, Workout Match also offers the ability to search for exercises and workouts from other users and copy them to your own account, which is especially useful for those looking for new workout ideas and variations.",
     "contact": {
       "email": "arthurgbsf@gmail.com"
     },
@@ -1335,6 +1335,60 @@
           }
         }
       }
+    },
+    "/workouts/user":{
+      "get": {
+        "description": "Route to get all registered and copied user's workouts.",
+        "tags": [
+          "Workouts"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Workouts"
+                  }
+                },
+                "examples": {
+                  "exercises": {
+                    "$ref": "#/components/examples/workouts"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400-ObjectIdCheck"
+          },
+          "404": {
+            "description": "Workout not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "message": "Workout not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
     }
   },
   "components": {
