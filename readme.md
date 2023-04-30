@@ -19,7 +19,7 @@ Additionally, Workout Match also offers the ability to search for exercises and 
 Clone the project
 
 ```bash
-  git clone
+  git clone https://github.com/arthurgbsf/workout-match.git
 ```
 
 Install dependencies
