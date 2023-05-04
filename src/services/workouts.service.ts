@@ -22,20 +22,12 @@ const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class WorkoutsService{
 
-    async getAll(headers:(string|undefined)){
+    async getAll(headers:(string|undefined), user: Boolean, workoutId:(string|undefined)){
+        if(workoutId){objectIdCheck(workoutId)}; 
         const userId:string = getUserTokenId(headers, secretJWT);
-        const workouts: Array<IWorkout> = await WorkoutsRepository.getAll(userId);
+        const workouts: Array<IWorkout> = await WorkoutsRepository.getAll(userId, user, workoutId);
         if(workouts.length === 0){
             throw new CustomError('No Workouts avaible.', 404);
-        };
-        return workouts;
-    };
-
-    async getAllUser(headers:(string|undefined)){
-        const userId:string = getUserTokenId(headers, secretJWT);
-        const workouts: Array<IWorkout> = await WorkoutsRepository.getAllUser(userId);
-        if(workouts.length === 0){
-            throw new CustomError('No workouts created or copied.', 404);
         };
         return workouts;
     };

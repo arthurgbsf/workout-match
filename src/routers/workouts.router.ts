@@ -8,21 +8,11 @@ import { validateFields } from "../middlewares/validateFields.middleware";
 
 const router = Router();
 
-router.get('/', auth, async (req:Request, res:Response) => {
+router.get('/:id?', auth, async (req:Request, res:Response) => {
     try {
-        const workouts = await WorkoutsService.getAll(req.headers['authorization']);
-        return res.status(200).send(workouts);
-    } catch (error:any) {
-        if(error instanceof CustomError){
-            return res.status(error.code).send({message: error.message});
-        };
-        return res.status(400).send({message: error.message});
-    }
-});
-
-router.get('/user', auth, async (req:Request, res:Response) => {
-    try {
-        const workouts = await WorkoutsService.getAllUser(req.headers['authorization']);
+        const workoutId: string | undefined = req.params.id ? req.params.id : undefined;
+        const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
+        const workouts = await WorkoutsService.getAll(req.headers['authorization'], user, workoutId);
         return res.status(200).send(workouts);
     } catch (error:any) {
         if(error instanceof CustomError){

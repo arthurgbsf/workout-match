@@ -4,7 +4,12 @@ import {ObjectId} from 'mongoose';
 
 class WorkoutsRepository{
 
-    getAll(userId:string){
+    getAll(userId:string, user: Boolean, ){
+
+        if(user){ 
+            return Workout.find({ createdBy: { $eq: userId }}).populate({
+                path:'exercises',
+                select: '-createdBy -copiedExerciseId'})};
         return Workout.find(
             { createdBy: { $ne: userId }}
             ).populate({
@@ -12,14 +17,6 @@ class WorkoutsRepository{
                 select: '-createdBy -inWorkouts -copiedExerciseId'});
     };
 
-    getAllUser(userId:string){
-        return Workout.find(
-            { createdBy: { $eq: userId }}
-            ).populate({
-                path:'exercises',
-                select: '-createdBy -inWorkouts -copiedExerciseId'});
-    };
-    
     getById(id:string){
         return Workout.findById({_id:id}).populate({
             path:'exercises',

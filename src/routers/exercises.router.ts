@@ -10,7 +10,8 @@ const router = Router();
 
 router.get('/', auth, async (req:Request, res:Response) => {
     try {
-        const exercises = await ExercisesService.getAll(req.headers['authorization']);
+        const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
+        const exercises = await ExercisesService.getAll(req.headers['authorization'], user);
         return res.status(200).send(exercises);
     } catch (error:any) {
         if(error instanceof CustomError){
