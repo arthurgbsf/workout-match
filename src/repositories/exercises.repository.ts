@@ -3,12 +3,9 @@ import mongoose, { ObjectId } from "mongoose";
 
 class ExercisesRepository{
 
-    getAll(userId: string){
+    getAll(userId: string, user: Boolean){
+        if(user){return Exercise.find({ createdBy: { $eq: userId }})};
         return Exercise.find({ copiedExerciseId: { $exists: false },  createdBy: { $ne: userId }}, {inWorkouts:0});
-    };
-
-    getAllUser(userId: string){
-        return Exercise.find({ createdBy: { $eq: userId }});
     };
 
     getById(id:string){
@@ -28,7 +25,8 @@ class ExercisesRepository{
     }
 
     addInWorkout(exerciseId: mongoose.Types.ObjectId, workoutId: ObjectId |  mongoose.Types.ObjectId) {
-        return Exercise.updateOne({_id: exerciseId}, {$push: {inWorkouts: workoutId}});
+        return Exercise.updateOne({ _id: exerciseId, inWorkouts: { $nin: [workoutId] } }, { $addToSet: { inWorkouts: workoutId } });
+
     }
 
     removeInWorkout(exerciseId: mongoose.Types.ObjectId, workoutId: ObjectId | mongoose.Types.ObjectId) {

@@ -66,9 +66,9 @@ class WorkoutsService{
         const workoutWithDate: IWorkout = {...workout, createdAt: new Date()}
 
         const createdWorkout: IWorkout = await WorkoutsRepository.create(workoutWithDate);
-        //COLOCA O ID DO WORKOUT CRIADO EM TODOS EXERCICIOS DO WORKOUT
+
         const createdWorkoutId = await setRefWorkoutInExercise(createdWorkout);
-        //COLOCA A REFERENCIA DO WORKOUT NO DOCUMENT DO USUARIO
+
         await UsersRepository.updateMyWorkouts(userId, createdWorkoutId);
 
         return createdWorkout;       
@@ -131,27 +131,17 @@ class WorkoutsService{
             const removedExerciseIds = currentWorkout.exercises.filter(
                 id => !workoutExercises.includes(id) ?? []);
 
-            const updatedExerciseIds = workoutExercises.filter(
-                id => currentWorkout.exercises.includes(id));
-
             const WorkoutWithUpdatedDate: Partial<IWorkout> = {...workout,
                 exercises: workout.exercises, 
                 updatedAt: moment(new Date()).locale('pt-br').format('L [às] LTS ')};
-           
+            
+            const addPromises = addedExerciseIds.map(exerciseId => ExercisesRepository.addInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId)));
+            const removePromises = removedExerciseIds.map(exerciseId => ExercisesRepository.removeInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId)));
+         
+            await Promise.all([...addPromises, ...removePromises]);
+                
             const result: UpdateWriteOpResult = await WorkoutsRepository.update(workoutId, WorkoutWithUpdatedDate);
-
-            for( const exerciseId of  addedExerciseIds){
-                await ExercisesRepository.addInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId));
-            }
-
-            for( const exerciseId of  removedExerciseIds){
-                await ExercisesRepository.removeInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId));
-            }
-
-            for (const exerciseId of updatedExerciseIds) {
-                await ExercisesRepository.addInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId));
-            }
-                    
+ 
             if(result.matchedCount === 0){
                 throw new CustomError('Workout not found.', 404); 
             };

@@ -42,7 +42,6 @@ class WorkoutsRepository{
         return Workout.updateOne({id:workoutId}, {$pull: {exercises: exerciseId}});
     }
 
-
 };
 
 export default new WorkoutsRepository;

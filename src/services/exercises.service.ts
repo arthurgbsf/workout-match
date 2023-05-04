@@ -16,20 +16,11 @@ const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class ExercisesService{
 
-    async getAll(headers:(string|undefined)){
+    async getAll(headers:(string|undefined), user: Boolean){
         const userId:string = getUserTokenId(headers, secretJWT);
-        const exercise: Array<IExercise> = await ExercisesRepository.getAll(userId);
+        const exercise: Array<IExercise> = await ExercisesRepository.getAll(userId, user);
         if(exercise.length === 0){
             throw new CustomError('No exercises avaible.', 404);
-        };
-        return exercise;
-    };
-
-    async getAllUser(headers:(string|undefined)){
-        const userId:string = getUserTokenId(headers, secretJWT);
-        const exercise: Array<IExercise> = await ExercisesRepository.getAllUser(userId);
-        if(exercise.length === 0){
-            throw new CustomError('No exercises created or copied.', 404);
         };
         return exercise;
     };

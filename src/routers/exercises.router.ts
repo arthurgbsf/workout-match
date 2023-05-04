@@ -20,20 +20,6 @@ router.get('/', auth, async (req:Request, res:Response) => {
     }
 });
 
-router.get('/user', auth, async (req:Request, res:Response) => {
-    try {
-        const exercises = await ExercisesService.getAllUser(req.headers['authorization']);
-        return res.status(200).send(exercises);
-    } catch (error:any) {
-        if(error instanceof CustomError){
-            return res.status(error.code).send({message: error.message});
-        };
-        return res.status(400).send({message: error.message});
-    }
-});
-
-
-
 router.get('/:id', auth, async (req:Request, res:Response) => {
     try {
         const exercises = await ExercisesService.getById(req.params.id);
@@ -70,7 +56,7 @@ router.post('/:id', auth, async (req:Request, res:Response) => {
     }
 });
 
-router.put('/update/:id', auth, requiredFields<IExercise>(["exercise", "sets", "reps", "type"]), async (req:Request, res:Response) => {
+router.put('/:id', auth, requiredFields<IExercise>(["exercise", "sets", "reps", "type"]), async (req:Request, res:Response) => {
     try {
         await ExercisesService.update(req.body, req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"Exercise updated. "}); 
@@ -82,7 +68,7 @@ router.put('/update/:id', auth, requiredFields<IExercise>(["exercise", "sets", "
     }
 });
 
-router.delete('/delete/:id', auth, async (req:Request, res:Response) => {
+router.delete('/:id', auth, async (req:Request, res:Response) => {
     try {
         await ExercisesService.remove( req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"The exercise was deleted with success."}); 

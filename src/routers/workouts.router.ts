@@ -68,7 +68,7 @@ router.post('/:id', auth, async (req:Request, res:Response) => {
     }
 });
 
-router.put('/update/:id', auth, requiredFields<IWorkout>(["workout", "level", "exercises"]), async (req:Request, res:Response) => {
+router.put('/:id', auth, requiredFields<IWorkout>(["workout", "level", "exercises"]), async (req:Request, res:Response) => {
     try {
         await WorkoutsService.update(req.body, req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"Workout updated."}); 
@@ -80,7 +80,7 @@ router.put('/update/:id', auth, requiredFields<IWorkout>(["workout", "level", "e
     }
 });
 
-router.delete('/delete/:id', auth, async (req:Request, res:Response) => {
+router.delete('/:id', auth, async (req:Request, res:Response) => {
     try {
         await WorkoutsService.remove( req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"The workout was deleted with success."}); 

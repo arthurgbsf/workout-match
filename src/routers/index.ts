@@ -8,8 +8,8 @@ const router = Router();
 
 router.use('/users', usersRouter);
 
-router.use('/workouts', workoutsRouter);
+router.use('training-data/workouts', workoutsRouter);
 
-router.use('/exercises', exercisesRouter);
+router.use('training-data/exercises', exercisesRouter);
 
 export default router;
