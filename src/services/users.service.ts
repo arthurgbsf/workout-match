@@ -8,7 +8,8 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { getUserTokenId } from "../utils/getUserTokenId.util";
 import moment from "moment";
-import { getUserByIdAndCheck } from "../utils/getUserByIdAndCheck.util";
+import { getByIdAndCheck } from "../utils/getByIdAndCheck.util";
+import { objectIdCheck } from "../utils/objectIdCheck.util";
 
 dotenv.config();
 
@@ -32,22 +33,18 @@ class UsersService{
         throw new CustomError('Authentication failed.', 407); 
     }
 
-    async getAll(){
-        const users: Array<IUser> = await UsersRepository.getAll({name:1, email:1, _id:1});
+    async getUser(headers: string|undefined, user: Boolean, thirdPartyUserId: string | undefined){
+        if(thirdPartyUserId){
+            objectIdCheck(thirdPartyUserId);
+            const thirdPartyUser: IUser = await getByIdAndCheck<IUser>(thirdPartyUserId, UsersRepository.getById);
+            return thirdPartyUser;
+        }
+        const userId:string = getUserTokenId(headers, secretJWT);
+        const users: Array<IUser> = await UsersRepository.getAll(userId, user, {name:1, email:1, _id:1});
         if(users.length === 0){
             throw new CustomError('No users registered.', 404);
         };
         return users;
-    };
-
-    async getById(header:string |undefined){
-
-        const userId: string = getUserTokenId(header, secretJWT);
-
-        const user: IUser = await getUserByIdAndCheck(userId);
-        
-        return user;
-
     };
 
     async create(user: IUser){

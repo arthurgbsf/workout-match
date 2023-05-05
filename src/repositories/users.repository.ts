@@ -4,8 +4,11 @@ import { ObjectId } from "mongoose";
 
 class UsersRepository{
 
-    getAll(projections:Object| null = null){
-        return User.find({}, projections);
+    getAll(userId: string, user: Boolean, projections:Object| null){
+        if(user){
+            return User.find({_id: userId}, projections);
+        };
+        return User.find({_id: { $ne: userId }}, projections);
     };
 
     getByEmail(email:string){
@@ -47,7 +50,6 @@ class UsersRepository{
     removeMyExercise(userId: string, exerciseId: mongoose.Types.ObjectId) {
         return User.updateOne({_id: userId}, {$pull: {myCreatedExercises: exerciseId}});
     }
-
 
 };
 

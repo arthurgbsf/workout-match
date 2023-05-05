@@ -9,43 +9,37 @@ import UsersRepository from "../repositories/users.repository";
 import { objectIdCheck } from "../utils/objectIdCheck.util";
 import { IUser} from "../models/user.model";
 import moment from "moment";
-import { getWorkoutByIdAndCheck } from "../utils/getWorkoutByIdAndCheck.util";
-import { getUserByIdAndCheck } from "../utils/getUserByIdAndCheck.util";
 import { validateExercises } from "../utils/validateExercises.util";
 import { setRefWorkoutInExercise } from "../utils/setRefWorkoutInExercise.util";
 import { copyWorkoutExercises } from "../utils/copyWorkoutExercises.util";
 import { removeRefWorkoutInExercise } from "../utils/removeRefWorkoutInExercise.util";
 import ExercisesRepository from "../repositories/exercises.repository";
+import { getByIdAndCheck } from "../utils/getByIdAndCheck.util";
 
 dotenv.config();
 const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class WorkoutsService{
 
-    async getAll(headers:(string|undefined), user: Boolean, workoutId:(string|undefined)){
-        if(workoutId){objectIdCheck(workoutId)}; 
+    async getWorkout(headers:(string|undefined), user: Boolean, workoutId:(string|undefined)){
+        if(workoutId){
+            objectIdCheck(workoutId);
+            const workout: IWorkout = await getByIdAndCheck<IWorkout>(workoutId, WorkoutsRepository.getById);
+            return workout;
+        }; 
         const userId:string = getUserTokenId(headers, secretJWT);
-        const workouts: Array<IWorkout> = await WorkoutsRepository.getAll(userId, user, workoutId);
+        const workouts: Array<IWorkout> = await WorkoutsRepository.getAll(userId, user);
         if(workouts.length === 0){
             throw new CustomError('No Workouts avaible.', 404);
         };
         return workouts;
     };
 
-    async getById(id:string){
-        
-        objectIdCheck(id);
-
-        const workout: IWorkout = await getWorkoutByIdAndCheck(id);
-
-        return workout;
-    };
-    
     async create(workout: IWorkout, headers:(string|undefined)){
 
         const userId:string = getUserTokenId(headers, secretJWT);
 
-        const user:IUser =  await getUserByIdAndCheck(userId);
+        const user:IUser =  await getByIdAndCheck<IUser>(userId, UsersRepository.getById);
 
         if((user.myCreatedExercises !== undefined) && (user.myCreatedExercises.length === 0)){
             throw new Error("To create a workout is required have exercises.");
@@ -72,7 +66,7 @@ class WorkoutsService{
 
         const userId:string = getUserTokenId(headers, secretJWT);
 
-        const toCopyWorkout: IWorkout = await getWorkoutByIdAndCheck(workoutId);
+        const toCopyWorkout: IWorkout = await getByIdAndCheck<IWorkout>(workoutId, WorkoutsRepository.getById);
 
         const copiedExercisesIds = await copyWorkoutExercises(toCopyWorkout, headers);
         
@@ -99,7 +93,7 @@ class WorkoutsService{
 
         objectIdCheck(workoutId);
 
-        const currentWorkout:IWorkout = await getWorkoutByIdAndCheck(workoutId);
+        const currentWorkout:IWorkout = await getByIdAndCheck(workoutId, WorkoutsRepository.getById);
 
         const userId:string = getUserTokenId(headers, secretJWT);
 
@@ -160,7 +154,7 @@ class WorkoutsService{
 
         objectIdCheck(workoutId);
 
-        const currentWorkout:IWorkout = await getWorkoutByIdAndCheck(workoutId);
+        const currentWorkout:IWorkout = await getByIdAndCheck<IWorkout>(workoutId, WorkoutsRepository.getById);
         
         const userId:string = getUserTokenId(headers, secretJWT);
 

@@ -2,7 +2,8 @@
 import { IWorkout } from "../models/workout.model";
 import { IExercise } from "../models/exercise.model";
 import { CustomError } from "./customError.util";
-import { getExerciseByIdAndCheck } from "./getExerciseByIdAndCheck.util";
+import { getByIdAndCheck } from "./getByIdAndCheck.util";
+import ExercisesRepository from "../repositories/exercises.repository";
 
 export  async function validateExercises(workout: IWorkout | Partial<IWorkout>, userId: string){
 
@@ -15,7 +16,7 @@ export  async function validateExercises(workout: IWorkout | Partial<IWorkout>, 
     }
 
     for (const exerciseId of workout.exercises){
-            const exercise: IExercise = await getExerciseByIdAndCheck(exerciseId.toString());
+            const exercise: IExercise = await getByIdAndCheck<IExercise>(exerciseId.toString(), ExercisesRepository.getById);
             if(exercise.createdBy.toString() !== userId){
                 throw new Error(`You need to copy these exercises first : ${exerciseId}`);
             }

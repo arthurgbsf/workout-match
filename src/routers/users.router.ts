@@ -8,9 +8,11 @@ import { requiredFields } from "../middlewares/requiredFields.middleware";
 
 const router = Router();
 
-router.get('/', auth, async (req:Request, res:Response) => {
+router.get('/:id?', auth, async (req:Request, res:Response) => {
     try {
-        const users = await UsersService.getAll();
+        const userId: string | undefined = req.params.id ? req.params.id : undefined;
+        const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
+        const users = await UsersService.getUser(req.headers['authorization'], user, userId);
         return res.status(200).send(users);
     } catch (error:any) {
         if(error instanceof CustomError){
@@ -18,18 +20,6 @@ router.get('/', auth, async (req:Request, res:Response) => {
         };
         return res.status(400).send({message: error.message});
     }
-});
-
-router.get('/user', auth, async (req:Request, res:Response) => {
-    try {
-        const user = await UsersService.getById(req.headers['authorization']);
-        return res.status(200).send(user);
-    } catch (error:any) {
-        if(error instanceof CustomError){
-            return res.status(error.code).send({message: error.message});
-        };
-        return res.status(400).send({message: error.message});
-    } 
 });
 
 router.post('/user', validateFields<IUser>(["name", "email", "password"]), async (req:Request, res:Response) => {

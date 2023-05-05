@@ -8,10 +8,11 @@ import { IExercise } from "../models/exercise.model";
 
 const router = Router();
 
-router.get('/', auth, async (req:Request, res:Response) => {
+router.get('/:id?', auth, async (req:Request, res:Response) => {
     try {
+        const exerciseId: string | undefined = req.params.id ? req.params.id : undefined;
         const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
-        const exercises = await ExercisesService.getAll(req.headers['authorization'], user);
+        const exercises = await ExercisesService.getExercise(req.headers['authorization'], user, exerciseId);
         return res.status(200).send(exercises);
     } catch (error:any) {
         if(error instanceof CustomError){
@@ -19,18 +20,6 @@ router.get('/', auth, async (req:Request, res:Response) => {
         };
         return res.status(400).send({message: error.message});
     }
-});
-
-router.get('/:id', auth, async (req:Request, res:Response) => {
-    try {
-        const exercises = await ExercisesService.getById(req.params.id);
-        return res.status(200).send(exercises);
-    } catch (error:any) {
-        if(error instanceof CustomError){
-            return res.status(error.code).send({message: error.message});
-        };
-        return res.status(400).send({message: error.message});
-    } 
 });
 
 router.post('/', auth, validateFields<IExercise>(["exercise","sets", "reps", "type"]), async (req:Request, res:Response) => {

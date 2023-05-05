@@ -12,7 +12,7 @@ router.get('/:id?', auth, async (req:Request, res:Response) => {
     try {
         const workoutId: string | undefined = req.params.id ? req.params.id : undefined;
         const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
-        const workouts = await WorkoutsService.getAll(req.headers['authorization'], user, workoutId);
+        const workouts = await WorkoutsService.getWorkout(req.headers['authorization'], user, workoutId);
         return res.status(200).send(workouts);
     } catch (error:any) {
         if(error instanceof CustomError){
@@ -20,18 +20,6 @@ router.get('/:id?', auth, async (req:Request, res:Response) => {
         };
         return res.status(400).send({message: error.message});
     }
-});
-
-router.get('/:id', auth, async (req:Request, res:Response) => {
-    try {
-        const workouts = await WorkoutsService.getById(req.params.id);
-        return res.status(200).send(workouts);
-    } catch (error:any) {
-        if(error instanceof CustomError){
-            return res.status(error.code).send({message: error.message});
-        };
-        return res.status(400).send({message: error.message});
-    } 
 });
 
 router.post('/', auth, validateFields<IWorkout>(["workout", "exercises"]), async (req:Request, res:Response) => {

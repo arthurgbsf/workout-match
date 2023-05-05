@@ -2,4 +2,5 @@ node_modules
 checklist
 .vscode
 .env
+.improvements
 

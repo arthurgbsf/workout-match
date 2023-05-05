@@ -9,26 +9,24 @@ import { objectIdCheck } from "../utils/objectIdCheck.util";
 import ExercisesRepository from "../repositories/exercises.repository";
 import WorkoutsRepository from "../repositories/workouts.repository";
 import moment from "moment";
-import { getExerciseByIdAndCheck } from "../utils/getExerciseByIdAndCheck.util";
+import { getByIdAndCheck } from "../utils/getByIdAndCheck.util";
 
 dotenv.config();
 const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class ExercisesService{
 
-    async getAll(headers:(string|undefined), user: Boolean){
+    async getExercise(headers: string|undefined , user: Boolean, exerciseId: string | undefined){
+        if(exerciseId){
+            objectIdCheck(exerciseId);
+            const exercise: IExercise = await getByIdAndCheck<IExercise>(exerciseId, ExercisesRepository.getById);
+            return exercise;
+        }; 
         const userId:string = getUserTokenId(headers, secretJWT);
         const exercise: Array<IExercise> = await ExercisesRepository.getAll(userId, user);
         if(exercise.length === 0){
             throw new CustomError('No exercises avaible.', 404);
         };
-        return exercise;
-    };
-
-    async getById(id:string){
-        
-        objectIdCheck(id);
-        const exercise: IExercise = await getExerciseByIdAndCheck(id);
         return exercise;
     };
 
@@ -52,13 +50,13 @@ class ExercisesService{
             return(createdExercise);       
     };
 
-    async copy(headers:(string|undefined), exerciseId:string){
+    async copy(headers: string|undefined , exerciseId:string){
         
         objectIdCheck(exerciseId);
 
         const userId:string = getUserTokenId(headers, secretJWT);
 
-        const {exercise,sets, reps, type} = await getExerciseByIdAndCheck(exerciseId);
+        const {exercise,sets, reps, type} = await getByIdAndCheck<IExercise>(exerciseId, ExercisesRepository.getById);
 
         const copiedExercise: IExercise = new Exercise({
             exercise: exercise,
@@ -81,7 +79,7 @@ class ExercisesService{
 
         objectIdCheck(exerciseId);
 
-        const currentExercise: IExercise =  await getExerciseByIdAndCheck(exerciseId);
+        const currentExercise: IExercise =  await getByIdAndCheck<IExercise>(exerciseId, ExercisesRepository.getById);
 
         const userId:string = getUserTokenId(headers, secretJWT);
 
@@ -101,14 +99,11 @@ class ExercisesService{
         };
     };
 
-    //QUANDO REMOVIDO DO BANCO DE EXERCÍCIOS TB É REMOVIDO DOS TREINOS
-    //ACHO QUE É POSSIVEL ADICIONAR UM MIDDLEWARE DO MONGOOSE PARA DELETAR AS REFERENCIAS 
-    //QUANDO O EXERCICIO FOR DELETADO 
     async remove(headers:string | undefined, exerciseId:string){
 
         objectIdCheck(exerciseId);
 
-        const currentExercise: IExercise =  await getExerciseByIdAndCheck(exerciseId);
+        const currentExercise: IExercise =  await getByIdAndCheck<IExercise>(exerciseId, ExercisesRepository.getById);
 
         if(currentExercise.inWorkouts !== undefined && currentExercise.inWorkouts.length !== 0)
             currentExercise.inWorkouts.forEach( async (workoutId ) => {
