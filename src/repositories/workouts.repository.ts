@@ -35,8 +35,20 @@ class WorkoutsRepository{
         return Workout.deleteOne({_id:id});
     }
 
+    addExercise(workoutId: ObjectId, exerciseId:  mongoose.Types.ObjectId){
+        return Workout.updateOne({id:workoutId}, {$push: {exercises: exerciseId}});
+    }
+
     removeExercise(workoutId: ObjectId, exerciseId:  mongoose.Types.ObjectId){
         return Workout.updateOne({id:workoutId}, {$pull: {exercises: exerciseId}});
+    }
+
+    addExercises(workoutId: ObjectId | mongoose.Types.ObjectId, toAddExercises:  Array<mongoose.Types.ObjectId>){
+        return Workout.updateOne({id:workoutId}, {$push: {exercises:{ $each: toAddExercises}}});
+    }
+
+    removeExercises(workoutId: ObjectId | mongoose.Types.ObjectId, toRemoveExercises:  Array<mongoose.Types.ObjectId>){
+        return Workout.updateOne({id:workoutId}, {$pullAll: {exercises: toRemoveExercises}});
     }
 
 };

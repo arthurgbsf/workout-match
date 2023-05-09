@@ -9,6 +9,8 @@ export interface IWorkout{
     createdAt?: Date | string;
     updatedAt?: Date | string;
     exercises: Array<mongoose.Types.ObjectId>;
+    addExercises?: Array<mongoose.Types.ObjectId>;
+    removeExercises?: Array<mongoose.Types.ObjectId>;
     copiedWorkoutId?: mongoose.Types.ObjectId;
 };   
 
@@ -43,6 +45,16 @@ export const workoutSchema = new Schema<IWorkout>({
     },
 
     exercises:[{
+      type: mongoose.Types.ObjectId,
+      ref: 'Exercise'
+    }],
+
+    addExercises:[{
+      type: mongoose.Types.ObjectId,
+      ref: 'Exercise'
+    }],
+    
+    removeExercises:[{
       type: mongoose.Types.ObjectId,
       ref: 'Exercise'
     }]

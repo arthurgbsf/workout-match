@@ -46,7 +46,7 @@ router.post('/:id', auth, async (req:Request, res:Response) => {
     }
 });
 
-router.put('/:id', auth, requiredFields<IWorkout>(["workout", "level", "exercises"]), async (req:Request, res:Response) => {
+router.put('/:id', auth, requiredFields<IWorkout>(["workout", "level", "addExercises", "removeExercises"]), async (req:Request, res:Response) => {
     try {
         await WorkoutsService.update(req.body, req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"Workout updated."}); 

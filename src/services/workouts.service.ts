@@ -10,11 +10,10 @@ import { objectIdCheck } from "../utils/objectIdCheck.util";
 import { IUser} from "../models/user.model";
 import moment from "moment";
 import { validateExercises } from "../utils/validateExercises.util";
-import { setRefWorkoutInExercise } from "../utils/setRefWorkoutInExercise.util";
 import { copyWorkoutExercises } from "../utils/copyWorkoutExercises.util";
-import { removeRefWorkoutInExercise } from "../utils/removeRefWorkoutInExercise.util";
 import ExercisesRepository from "../repositories/exercises.repository";
 import { getByIdAndCheck } from "../utils/getByIdAndCheck.util";
+import { updateInWorkouts } from "../utils/updateInWorkouts.util";
 
 dotenv.config();
 const secretJWT = process.env.JWT_SECRET_KEY || "";
@@ -44,8 +43,12 @@ class WorkoutsService{
         if((user.myCreatedExercises !== undefined) && (user.myCreatedExercises.length === 0)){
             throw new Error("To create a workout is required have exercises.");
         }
-        
-        await validateExercises(workout, userId);
+
+        if(workout.exercises.length === 0){
+            throw new Error("Is required at least one exercise.");
+        }
+
+        await validateExercises(workout.exercises, userId);
 
         workout.createdBy = new mongoose.Types.ObjectId(userId);
 
@@ -53,21 +56,24 @@ class WorkoutsService{
 
         const createdWorkout: IWorkout = await WorkoutsRepository.create(workoutWithDate);
 
-        const createdWorkoutId = await setRefWorkoutInExercise(createdWorkout);
+        if(createdWorkout._id){
+        await updateInWorkouts(createdWorkout.exercises, createdWorkout._id, ExercisesRepository.addInWorkout)
 
-        await UsersRepository.updateMyWorkouts(userId, createdWorkoutId);
+        await UsersRepository.updateMyWorkouts(userId, createdWorkout._id);
 
-        return createdWorkout;       
+        return createdWorkout;
+        
+        }
     };
 
     async copy(headers:(string|undefined), workoutId:string){
 
         objectIdCheck(workoutId);
-
+        
         const userId:string = getUserTokenId(headers, secretJWT);
-
+        
         const toCopyWorkout: IWorkout = await getByIdAndCheck<IWorkout>(workoutId, WorkoutsRepository.getById);
-
+        
         const copiedExercisesIds = await copyWorkoutExercises(toCopyWorkout, headers);
         
         const {workout, level} = toCopyWorkout;
@@ -83,10 +89,9 @@ class WorkoutsService{
        
         const newWorkout = await WorkoutsRepository.create(copiedWorkout);
 
-        await setRefWorkoutInExercise(newWorkout);
+        await updateInWorkouts(newWorkout.exercises, newWorkout._id ,ExercisesRepository.addInWorkout);
 
-        await UsersRepository.updateMyWorkouts(userId, newWorkout._id);
-              
+        await UsersRepository.updateMyWorkouts(userId, newWorkout._id);          
     };
 
     async update(workout: Partial<IWorkout>, headers:(string | undefined), workoutId:string){
@@ -100,53 +105,38 @@ class WorkoutsService{
         if(userId !== currentWorkout.createdBy.toString()){
             throw new CustomError("this id is not linked to this user.", 401);
         };
-        
-        if(workout.exercises){
 
-            await validateExercises(workout, userId);
+        const workoutObjectId = new mongoose.Types.ObjectId(workoutId);
 
-            const workoutExercises = workout.exercises
+        const {addExercises, removeExercises,  ...noUpdateExercisesWorkout} = workout;
 
-            if(workoutExercises === undefined){
-                throw new CustomError("Exercises not found.", 404);
-            }
-
-            const addedExerciseIds = workoutExercises.filter(
-                id => !currentWorkout.exercises.includes(id)) ?? [];
-
-            const removedExerciseIds = currentWorkout.exercises.filter(
-                id => !workoutExercises.includes(id) ?? []);
+        if(noUpdateExercisesWorkout){
 
             const WorkoutWithUpdatedDate: Partial<IWorkout> = {...workout,
-                exercises: workout.exercises, 
-                updatedAt: moment(new Date()).locale('pt-br').format('L [às] LTS ')};
-            
-            const addPromises = addedExerciseIds.map(exerciseId => ExercisesRepository.addInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId)));
-            const removePromises = removedExerciseIds.map(exerciseId => ExercisesRepository.removeInWorkout(exerciseId, new mongoose.Types.ObjectId(workoutId)));
-         
-            await Promise.all([...addPromises, ...removePromises]);
-                
+                updatedAt: moment(new Date()).locale('pt-br').format('L [às] LTS')};
+
             const result: UpdateWriteOpResult = await WorkoutsRepository.update(workoutId, WorkoutWithUpdatedDate);
- 
+
             if(result.matchedCount === 0){
                 throw new CustomError('Workout not found.', 404); 
             };
             if(result.modifiedCount === 0){
                 throw new Error("Wasn't updated.");
             };
+        };
 
-        }else{
-            
-            const WorkoutWithUpdatedDate: Partial<IWorkout> = {...workout,
-                updatedAt: moment(new Date()).locale('pt-br').format('L [às] LTS ')};
-            const result: UpdateWriteOpResult = await WorkoutsRepository.update(workoutId, WorkoutWithUpdatedDate);
-            if(result.matchedCount === 0){
-                throw new CustomError('Workout not found.', 404); 
+        if(removeExercises){
+            await updateInWorkouts(removeExercises, workoutObjectId, ExercisesRepository.removeInWorkout);
+            await WorkoutsRepository.removeExercises(workoutObjectId, removeExercises);
+           
+        };
+
+        if(addExercises){
+                await validateExercises(addExercises, userId);
+                await updateInWorkouts(addExercises, workoutObjectId, ExercisesRepository.addInWorkout);
+                await WorkoutsRepository.addExercises(workoutObjectId, addExercises);
+
             };
-            if(result.modifiedCount === 0){
-                throw new CustomError("Wasn't updated.");
-            };
-        }
 
     };
 
@@ -162,14 +152,19 @@ class WorkoutsService{
             throw new CustomError("This id is not linked to this user.", 401);
         }
 
+        if(currentWorkout._id){
+            
+            await updateInWorkouts(currentWorkout.exercises, currentWorkout._id ,ExercisesRepository.removeInWorkout);
+
+            await UsersRepository.removeMyWorkout(userId, new mongoose.Types.ObjectId(workoutId));
+        };
+
         const result : DeleteResult = await WorkoutsRepository.remove(workoutId);
 
         if(result.deletedCount === 0){
             throw new Error("Wasn't deleted.");
         }; 
-        await removeRefWorkoutInExercise(currentWorkout);
-        await UsersRepository.removeMyWorkout(userId, new mongoose.Types.ObjectId(workoutId));
-    };
+    }; 
 };
 
 export default new WorkoutsService;

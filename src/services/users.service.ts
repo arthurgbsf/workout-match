@@ -40,7 +40,7 @@ class UsersService{
             return thirdPartyUser;
         }
         const userId:string = getUserTokenId(headers, secretJWT);
-        const users: Array<IUser> = await UsersRepository.getAll(userId, user, {name:1, email:1, _id:1});
+        const users: Array<IUser> = await UsersRepository.getAll(userId, user, {myCreatedWorkouts: 1, myCreatedExercises:1, name:1, email:1, _id:1});
         if(users.length === 0){
             throw new CustomError('No users registered.', 404);
         };
