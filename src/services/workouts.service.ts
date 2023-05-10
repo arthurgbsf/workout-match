@@ -54,16 +54,15 @@ class WorkoutsService{
 
         const workoutWithDate: IWorkout = {...workout, createdAt: new Date()}
 
-        const createdWorkout: IWorkout = await WorkoutsRepository.create(workoutWithDate);
+        const newWorkout: IWorkout = await WorkoutsRepository.create(workoutWithDate);
 
-        if(createdWorkout._id){
-        await updateInWorkouts(createdWorkout.exercises, createdWorkout._id, ExercisesRepository.addInWorkout)
+        if(!newWorkout._id){
+            throw new Error("Undefined.");
+        };
 
-        await UsersRepository.updateMyWorkouts(userId, createdWorkout._id);
+        await updateInWorkouts(newWorkout.exercises, newWorkout._id, ExercisesRepository.addInWorkout)
 
-        return createdWorkout;
-        
-        }
+        await UsersRepository.updateMyWorkouts(userId, newWorkout._id);
     };
 
     async copy(headers:(string|undefined), workoutId:string){
@@ -87,7 +86,11 @@ class WorkoutsService{
             createdAt: new Date()
         });
        
-        const newWorkout = await WorkoutsRepository.create(copiedWorkout);
+        const newWorkout: IWorkout = await WorkoutsRepository.create(copiedWorkout);
+
+        if(!newWorkout._id){
+            throw new Error("Undefined.");
+        };
 
         await updateInWorkouts(newWorkout.exercises, newWorkout._id ,ExercisesRepository.addInWorkout);
 

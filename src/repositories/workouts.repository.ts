@@ -7,20 +7,30 @@ class WorkoutsRepository{
     getAll(userId:string, user: Boolean){
 
         if(user){ 
-            return Workout.find({ createdBy: { $eq: userId }}).populate({
+            return Workout.find({ createdBy: { $eq: userId }},
+                {addExercises: 0, removeExercises: 0}
+                ).populate({
                 path:'exercises',
-                select: '-createdBy -inWorkouts -copiedExerciseId'})};
+                select: '-createdBy -inWorkouts -copiedExerciseId'}
+            );
+        };
+
         return Workout.find(
-            { createdBy: { $ne: userId }}
+            { createdBy: { $ne: userId }},
+            {addExercises: 0, removeExercises: 0}
             ).populate({
                 path:'exercises',
-                select: '-createdBy -inWorkouts -copiedExerciseId'});
+                select: '-createdBy -inWorkouts -copiedExerciseId'}
+            );
     };
 
     getById(id:string){
-        return Workout.findById({_id:id}).populate({
+        return Workout.findById({_id:id},
+            {addExercises: 0, removeExercises: 0}
+            ).populate({
             path:'exercises',
-            select: '-createdBy -inWorkouts -copiedExerciseId'});
+            select: '-createdBy -inWorkouts -copiedExerciseId'}
+        );
     };
 
     create(workout:IWorkout){
@@ -35,20 +45,16 @@ class WorkoutsRepository{
         return Workout.deleteOne({_id:id});
     }
 
-    addExercise(workoutId: ObjectId, exerciseId:  mongoose.Types.ObjectId){
-        return Workout.updateOne({id:workoutId}, {$push: {exercises: exerciseId}});
-    }
-
     removeExercise(workoutId: ObjectId, exerciseId:  mongoose.Types.ObjectId){
-        return Workout.updateOne({id:workoutId}, {$pull: {exercises: exerciseId}});
+        return Workout.updateOne({_id:workoutId}, {$pull: {exercises: exerciseId}});
     }
 
     addExercises(workoutId: ObjectId | mongoose.Types.ObjectId, toAddExercises:  Array<mongoose.Types.ObjectId>){
-        return Workout.updateOne({id:workoutId}, {$push: {exercises:{ $each: toAddExercises}}});
+        return Workout.updateOne({_id:workoutId}, {$push: {exercises:{ $each: toAddExercises}}});
     }
 
     removeExercises(workoutId: ObjectId | mongoose.Types.ObjectId, toRemoveExercises:  Array<mongoose.Types.ObjectId>){
-        return Workout.updateOne({id:workoutId}, {$pullAll: {exercises: toRemoveExercises}});
+        return Workout.updateOne({_id:workoutId}, {$pullAll: {exercises: toRemoveExercises}});
     }
 
 };

@@ -1,9 +1,10 @@
 Improvements for version 1.1.0:
 
 ✔ Reduce endpoints using query parameters; @today @done (5/5/2023, 4:51:54 PM)
-☐ Corret functonality buggies;
+✔ Corret functonality buggies; @done (5/9/2023, 11:25:40 AM)
 ☐ User "Join" to validate inputes;
 ☐ User tool to recovery password by email;
 ☐ Crete generic functions and generic errors handley;
-☐  Add more atributes in collections;
-☐ Better adaptations to apiRestful concepts.
+☐ Add more atributes in collections;
+☐ Better adaptations to apiRestful concepts.;
+☐ Update de swagger docs.
