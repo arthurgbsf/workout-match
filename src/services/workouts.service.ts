@@ -2,6 +2,7 @@ import WorkoutsRepository from "../repositories/workouts.repository";
 import { IWorkout, Workout } from '../models/workout.model';
 import { getUserTokenId } from "../utils/getUserTokenId.util";
 import { CustomError } from "../errors/customError.error";
+import { badRequest, notFound, unauthorized } from "../errors/errorResponses.error";
 import mongoose, {UpdateWriteOpResult} from "mongoose";
 import {DeleteResult} from 'mongodb';
 import dotenv from 'dotenv';
@@ -29,7 +30,7 @@ class WorkoutsService{
         const userId:string = getUserTokenId(headers, secretJWT);
         const workouts: Array<IWorkout> = await WorkoutsRepository.getAll(userId, user);
         if(workouts.length === 0){
-            throw new CustomError('No Workouts avaible.', 404);
+            throw new CustomError(notFound.error1, notFound.code);
         };
         return workouts;
     };
@@ -41,11 +42,11 @@ class WorkoutsService{
         const user:IUser =  await getByIdAndCheck<IUser>(userId, UsersRepository.getById);
 
         if((user.myCreatedExercises !== undefined) && (user.myCreatedExercises.length === 0)){
-            throw new Error("To create a workout is required have exercises.");
+            throw new CustomError(unauthorized.error1, unauthorized.code);
         }
 
         if(workout.exercises.length === 0){
-            throw new Error("Is required at least one exercise.");
+            throw new CustomError(unauthorized.error2, unauthorized.code);
         }
 
         await validateExercises(workout.exercises, userId);
@@ -57,7 +58,7 @@ class WorkoutsService{
         const newWorkout: IWorkout = await WorkoutsRepository.create(workoutWithDate);
 
         if(!newWorkout._id){
-            throw new Error("Undefined.");
+            throw new CustomError(badRequest.error4, badRequest.code);
         };
 
         await updateInWorkouts(newWorkout.exercises, newWorkout._id, ExercisesRepository.addInWorkout)
@@ -89,7 +90,7 @@ class WorkoutsService{
         const newWorkout: IWorkout = await WorkoutsRepository.create(copiedWorkout);
 
         if(!newWorkout._id){
-            throw new Error("Undefined.");
+            throw new CustomError(badRequest.error4, badRequest.code);
         };
 
         await updateInWorkouts(newWorkout.exercises, newWorkout._id ,ExercisesRepository.addInWorkout);
@@ -106,7 +107,7 @@ class WorkoutsService{
         const userId:string = getUserTokenId(headers, secretJWT);
 
         if(userId !== currentWorkout.createdBy.toString()){
-            throw new CustomError("this id is not linked to this user.", 401);
+            throw new CustomError(unauthorized.error0, unauthorized.code);
         };
 
         const workoutObjectId = new mongoose.Types.ObjectId(workoutId);
@@ -121,10 +122,10 @@ class WorkoutsService{
             const result: UpdateWriteOpResult = await WorkoutsRepository.update(workoutId, WorkoutWithUpdatedDate);
 
             if(result.matchedCount === 0){
-                throw new CustomError('Workout not found.', 404); 
+                throw new CustomError(notFound.error0, notFound.code); 
             };
             if(result.modifiedCount === 0){
-                throw new Error("Wasn't updated.");
+                throw new CustomError(badRequest.error2, badRequest.code);
             };
         };
 
@@ -152,7 +153,7 @@ class WorkoutsService{
         const userId:string = getUserTokenId(headers, secretJWT);
 
         if(userId !== currentWorkout.createdBy.toString()){
-            throw new CustomError("This id is not linked to this user.", 401);
+            throw new CustomError(unauthorized.error0, unauthorized.code);
         }
 
         if(currentWorkout._id){
@@ -165,7 +166,7 @@ class WorkoutsService{
         const result : DeleteResult = await WorkoutsRepository.remove(workoutId);
 
         if(result.deletedCount === 0){
-            throw new Error("Wasn't deleted.");
+            throw new CustomError(badRequest.error3, badRequest.code);
         }; 
     }; 
 };

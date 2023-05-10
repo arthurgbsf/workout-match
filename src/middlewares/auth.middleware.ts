@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
-import { UnauthorizedError } from "../errors/customError.error";
+import { CustomError } from "../errors/customError.error";
+import { unauthorized } from "../errors/errorResponses.error";
 import { getToken } from '../utils/getToken.utils'
 dotenv.config();
 
@@ -13,7 +14,7 @@ export function auth(req:Request, res:Response, next:NextFunction){
         const token = getToken(req.headers['authorization']);
         const decoded = jwt.verify(token ,secretJWT);
         if(!decoded){
-            throw new UnauthorizedError();
+            throw new CustomError(unauthorized.error0, unauthorized.code);
         }
         next(); 
     } catch (error:any) {

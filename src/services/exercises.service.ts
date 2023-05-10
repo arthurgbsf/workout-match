@@ -1,6 +1,7 @@
 import { Exercise, IExercise } from "../models/exercise.model";
 import { getUserTokenId } from "../utils/getUserTokenId.util";
-import { NotFound } from "../errors/customError.error";
+import { CustomError } from "../errors/customError.error";
+import { badRequest, notFound, unauthorized } from "../errors/errorResponses.error";
 import mongoose, {ObjectId, UpdateWriteOpResult} from "mongoose";
 import {DeleteResult} from 'mongodb';
 import dotenv from 'dotenv';
@@ -25,7 +26,7 @@ class ExercisesService{
         const userId:string = getUserTokenId(headers, secretJWT);
         const exercise: Array<IExercise> = await ExercisesRepository.getAll(userId, user);
         if(exercise.length === 0){
-            throw new CustomError('No exercises avaible.', 404);
+            throw new CustomError(notFound.error1, notFound.code);
         };
         return exercise;
     };
@@ -42,12 +43,12 @@ class ExercisesService{
             const createdExerciseId: (ObjectId | undefined) = createdExercise._id
 
             if (createdExerciseId === undefined) {
-                throw new Error("Exercise id undefined.")
+                throw new CustomError(badRequest.error4, badRequest.code);
             }
 
             await UsersRepository.updateMyExercises(userId,createdExerciseId);
             
-            return(createdExercise);       
+            return createdExercise ;       
     };
 
     async copy(headers: string|undefined , exerciseId:string){
@@ -84,18 +85,18 @@ class ExercisesService{
         const userId:string = getUserTokenId(headers, secretJWT);
 
         if(userId !== currentExercise.createdBy.toString()){
-            throw new CustomError("This id is not linked to this user.", 401);
-        }
+            throw new CustomError(unauthorized.error0, unauthorized.code);
+        };
 
         const exerciseWithUpdatedDate: Partial<IExercise> = {...exercise,
             updatedAt: moment(new Date).locale("pt-br").format('L [às] LTS ')};
 
         const result: UpdateWriteOpResult = await ExercisesRepository.update(exerciseId, exerciseWithUpdatedDate);
         if(result.matchedCount === 0){
-            throw new CustomError('Exercise not found.', 404); 
+            throw new CustomError(notFound.error0, notFound.code); 
         };
         if(result.modifiedCount === 0){
-            throw new Error("Wasn't updated.");
+            throw new CustomError(badRequest.error2, badRequest.code);
         };
     };
 
@@ -113,13 +114,13 @@ class ExercisesService{
         const userId:string = getUserTokenId(headers, secretJWT);
 
         if(userId !== currentExercise.createdBy.toString()){
-            throw new CustomError("This id is not linked to this user.", 401);
+            throw new CustomError(unauthorized.error0, unauthorized.code);
         }
 
         const result : DeleteResult = await ExercisesRepository.remove(exerciseId);
 
         if(result.deletedCount === 0){
-            throw new Error("Wasn't delete .");
+            throw new CustomError(badRequest.error3, badRequest.code);
         }; 
 
         await UsersRepository.removeMyExercise(userId, new mongoose.Types.ObjectId(exerciseId));

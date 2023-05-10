@@ -1,6 +1,7 @@
 import { IUser } from "../models/user.model";
 import UsersRepository from "../repositories/users.repository";
 import { CustomError } from "../errors/customError.error";
+import { unauthorized, notFound, conflict, badRequest } from "../errors/errorResponses.error";
 import {UpdateWriteOpResult } from "mongoose";
 import {DeleteResult} from 'mongodb';
 import bcrypt from 'bcrypt';
@@ -21,7 +22,7 @@ class UsersService{
 
         const user: (IUser | null) = await UsersRepository.getByEmail(email);
         if(user === null){
-            throw new CustomError('User not found.', 404);  
+            throw new CustomError(unauthorized.error0, unauthorized.code);
         };
         const result: Boolean = await bcrypt.compare(password,user.password);   
         if(result){
@@ -30,7 +31,7 @@ class UsersService{
             });
         }
 
-        throw new CustomError('Authentication failed.', 407); 
+        throw new CustomError(unauthorized.error0, unauthorized.code);
     }
 
     async getUser(headers: string|undefined, user: Boolean, thirdPartyUserId: string | undefined){
@@ -42,7 +43,7 @@ class UsersService{
         const userId:string = getUserTokenId(headers, secretJWT);
         const users: Array<IUser> = await UsersRepository.getAll(userId, user, {myCreatedWorkouts: 1, myCreatedExercises:1, name:1, email:1, _id:1});
         if(users.length === 0){
-            throw new CustomError('No users registered.', 404);
+            throw new CustomError(notFound.error1, notFound.code);
         };
         return users;
     };
@@ -51,7 +52,7 @@ class UsersService{
 
         const email:IUser | null = await UsersRepository.getByEmail(user.email);
         if(email){
-            throw new CustomError("Email have already registered.", 404);
+            throw new CustomError(conflict.error1, conflict.code);
         }
 
         if(user.password) {
@@ -75,7 +76,7 @@ class UsersService{
             const email:IUser | null = await UsersRepository.getByEmail(user.email);
             
             if(email){
-                throw new CustomError("Email already registered.", 404);
+                throw new CustomError(conflict.error1, conflict.code);
             }
         }
         const userWithUpdatedDate: Partial<IUser> = {...user, 
@@ -83,10 +84,10 @@ class UsersService{
 
         const result: UpdateWriteOpResult = await UsersRepository.update(authUserId, userWithUpdatedDate);
         if(result.matchedCount === 0){
-            throw new CustomError('User not found.', 404); 
+            throw new CustomError(notFound.error0, notFound.code); 
         };
         if(result.modifiedCount === 0){
-            throw new CustomError('User not modified.', 404);
+            throw new CustomError(badRequest.error2, badRequest.code);
         };
     };
 
@@ -96,10 +97,9 @@ class UsersService{
         
         const result : DeleteResult = await UsersRepository.remove(authUserId);
         if(result.deletedCount === 0){
-            throw new CustomError("User wasn't delete", 400);
+            throw new CustomError(badRequest.error3, badRequest.code);
         }; 
     };
 };
-
 
 export default new UsersService;
