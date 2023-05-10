@@ -1,6 +1,6 @@
 import { Router, Response, Request } from "express";
 import ExercisesService from "../services/exercises.service";
-import { CustomError } from "../utils/customError.util";
+import { CustomError } from "../errors/customError.error";
 import { auth } from "../middlewares/auth.middleware";
 import { validateFields } from "../middlewares/validateFields.middleware";
 import { requiredFields } from "../middlewares/requiredFields.middleware";

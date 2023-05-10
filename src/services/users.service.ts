@@ -1,6 +1,6 @@
 import { IUser } from "../models/user.model";
 import UsersRepository from "../repositories/users.repository";
-import { CustomError } from "../utils/customError.util";
+import { CustomError } from "../errors/customError.error";
 import {UpdateWriteOpResult } from "mongoose";
 import {DeleteResult} from 'mongodb';
 import bcrypt from 'bcrypt';

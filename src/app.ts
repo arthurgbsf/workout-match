@@ -4,6 +4,7 @@ import routers from './routers';
 import connection from './config/database';
 import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./docs/swagger.doc.json";
+import errorHandler from './middlewares/errorHandler.middleware';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.json());
 app.use(cors());
 app.use(routers);
+app.use(errorHandler);
 
 const port = 3000;
 

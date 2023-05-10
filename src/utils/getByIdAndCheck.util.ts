@@ -1,5 +1,5 @@
 
-import { CustomError} from "./customError.util";
+import { CustomError} from "../errors/customError.error";
 
 export const getByIdAndCheck=  async <T>(id: string, repositoryMethod : Function) => {
 

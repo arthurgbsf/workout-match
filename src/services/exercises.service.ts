@@ -1,6 +1,6 @@
 import { Exercise, IExercise } from "../models/exercise.model";
 import { getUserTokenId } from "../utils/getUserTokenId.util";
-import { CustomError } from "../utils/customError.util";
+import { NotFound } from "../errors/customError.error";
 import mongoose, {ObjectId, UpdateWriteOpResult} from "mongoose";
 import {DeleteResult} from 'mongodb';
 import dotenv from 'dotenv';

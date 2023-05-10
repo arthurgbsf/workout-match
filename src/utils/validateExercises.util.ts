@@ -1,5 +1,5 @@
 import { IExercise } from "../models/exercise.model";
-import { CustomError } from "./customError.util";
+import { CustomError } from "../errors/customError.error";
 import { getByIdAndCheck } from "./getByIdAndCheck.util";
 import ExercisesRepository from "../repositories/exercises.repository";
 import mongoose from "mongoose";

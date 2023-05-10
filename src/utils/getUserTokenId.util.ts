@@ -1,4 +1,4 @@
-import { CustomError } from "./customError.util";
+import { CustomError } from "../errors/customError.error";
 import { getToken } from "./getToken.utils";
 import jwt from "jsonwebtoken";
 

@@ -1,7 +1,7 @@
 import WorkoutsRepository from "../repositories/workouts.repository";
 import { IWorkout, Workout } from '../models/workout.model';
 import { getUserTokenId } from "../utils/getUserTokenId.util";
-import { CustomError } from "../utils/customError.util";
+import { CustomError } from "../errors/customError.error";
 import mongoose, {UpdateWriteOpResult} from "mongoose";
 import {DeleteResult} from 'mongodb';
 import dotenv from 'dotenv';

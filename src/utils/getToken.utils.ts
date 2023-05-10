@@ -1,4 +1,4 @@
-import { CustomError } from "./customError.util";
+import { CustomError } from "../errors/customError.error";
 
 export function getToken(token:(string | undefined)) :string {
     if(!token){
