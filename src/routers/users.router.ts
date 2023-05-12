@@ -1,9 +1,8 @@
 import { Router, Response, Request, NextFunction} from "express";
 import UsersService from "../services/users.service";
-import { IUser } from "../models/user.model";
 import { auth } from "../middlewares/auth.middleware";
-import { validateFields } from "../middlewares/validateFields.middleware";
-import { requiredFields } from "../middlewares/requiredFields.middleware";
+import { inputValidator } from "../middlewares/inputValidator.middleware";
+import { createUserSchema, authUserSchema, updateUserSchema } from "../models/userValidations.model";
 
 const router = Router();
 
@@ -18,7 +17,7 @@ router.get('/:id?', auth, async (req:Request, res:Response, next:NextFunction) =
     }
 });
 
-router.post('/user', validateFields<IUser>(["name", "email", "password"]), async (req:Request, res:Response, next:NextFunction) => {
+router.post('/user', inputValidator(createUserSchema) , async (req:Request, res:Response, next:NextFunction) => {
     try {
         await UsersService.create(req.body);
         return res.status(201).send({message: "User created."});
@@ -27,7 +26,7 @@ router.post('/user', validateFields<IUser>(["name", "email", "password"]), async
     }
 });
 
-router.post('/authentication', validateFields<IUser>(["email", "password"]), async (req:Request, res:Response, next:NextFunction) => {
+router.post('/authentication', inputValidator(authUserSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         const token = await UsersService.auth(req.body.email, req.body.password);
         return res.status(200).send({token});
@@ -36,7 +35,7 @@ router.post('/authentication', validateFields<IUser>(["email", "password"]), asy
     }
 })
 
-router.put('/user', auth, requiredFields<IUser>(["name", "email", "password"]), async (req:Request, res:Response, next:NextFunction) => {
+router.put('/user', auth, inputValidator(updateUserSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         await UsersService.update(req.body, req.headers['authorization']);
         return res.status(200).send({message:"User updated."}); 
