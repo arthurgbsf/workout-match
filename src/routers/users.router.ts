@@ -2,7 +2,7 @@ import { Router, Response, Request, NextFunction} from "express";
 import UsersService from "../services/users.service";
 import { auth } from "../middlewares/auth.middleware";
 import { inputValidator } from "../middlewares/inputValidator.middleware";
-import { createUserSchema, authUserSchema, updateUserSchema } from "../models/userValidations.model";
+import { createUserSchema, authUserSchema, updateUserSchema } from "../validations/uses.validation";
 
 const router = Router();
 

@@ -1,10 +1,8 @@
 import { Router, Response, Request, NextFunction } from "express";
 import WorkoutsService from '../services/workouts.service'
-import { IWorkout } from "../models/workout.model";
-import { CustomError } from "../errors/customError.error";
 import { auth } from "../middlewares/auth.middleware";
-import { requiredFields } from "../middlewares/requiredFields.middleware";
-import { validateFields } from "../middlewares/validateFields.middleware";
+import { inputValidator } from "../middlewares/inputValidator.middleware";
+import { updateWorkoutSchema, createWorkoutSchema } from "../validations/workouts.validation";
 
 const router = Router();
 
@@ -19,7 +17,7 @@ router.get('/:id?', auth, async (req:Request, res:Response, next:NextFunction) =
     }
 });
 
-router.post('/', auth, validateFields<IWorkout>(["workout", "exercises"]), async (req:Request, res:Response, next:NextFunction) => {
+router.post('/', auth, inputValidator(createWorkoutSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         await WorkoutsService.create(req.body, req.headers['authorization']);
         return res.status(201).send({message: "Workout created."});
@@ -37,7 +35,7 @@ router.post('/:id', auth, async (req:Request, res:Response, next:NextFunction) =
     }
 });
 
-router.put('/:id', auth, requiredFields<IWorkout>(["workout", "level", "addExercises", "removeExercises"]), async (req:Request, res:Response, next:NextFunction) => {
+router.put('/:id', auth, inputValidator(updateWorkoutSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         await WorkoutsService.update(req.body, req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"Workout updated."}); 
