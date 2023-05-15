@@ -26,15 +26,6 @@ router.post('/user', inputValidator(createUserSchema) , async (req:Request, res:
     }
 });
 
-router.post('/authentication', inputValidator(authUserSchema), async (req:Request, res:Response, next:NextFunction) => {
-    try {
-        const token = await UsersService.auth(req.body.email, req.body.password);
-        return res.status(200).send({token});
-    } catch (error:any) {
-        next(error);
-    }
-})
-
 router.put('/user', auth, inputValidator(updateUserSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         await UsersService.update(req.body, req.headers['authorization']);

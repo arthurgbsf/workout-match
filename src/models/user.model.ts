@@ -6,6 +6,9 @@ export interface IUser{
     name: string;
     email: string;
     password: string;
+    temporaryPassword?: string;
+    temporaryPasswordExpiresAt:?string;
+
     createdAt?: Date | string;
     updatedAt?: Date | string;
     myCreatedWorkouts?: Array<ObjectId>;
@@ -24,6 +27,15 @@ export const userSchema = new Schema<IUser>({
     password: {
         type: String,
         required: true
+    },
+
+    temporaryPassword: {
+        type: String,
+        required: false,
+    },
+    temporaryPasswordExpiresAt: {
+        type: Date,
+        required: false,
     },
     createdAt: {
         required:false,
