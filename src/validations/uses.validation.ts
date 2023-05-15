@@ -1,4 +1,4 @@
-import * as Joi from  'joi';
+import Joi from 'joi';
 
 export const areRequired: Joi.SchemaFunction = (key) => key.required();
 export const areForbbiden: Joi.SchemaFunction = (key) => key.forbidden();
@@ -13,12 +13,16 @@ export const updateUserSchema = Joi.object({
 
 export const createUserSchema = updateUserSchema.fork(
     ['name', 'email', 'password'], areRequired).fork(
-        ['temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
+    ['temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
 
 export const authUserSchema = updateUserSchema.fork(
-    ['email', 'password'], areRequired).fork(['name','temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
+    ['email', 'password'], areRequired).fork(
+    ['name','temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
 
 export const forgetPwdUserSchema = updateUserSchema.fork(
-    'email', areRequired). fork(['name', 'email', 'temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
+    'email', areRequired). fork(
+    ['name', 'email', 'temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
 
-export const changePwdUserSchema = 
+export const changePwdUserSchema = updateUserSchema.fork(
+    ['temporaryPassword','password', 'password'], areRequired).fork(
+    ['name', 'temporaryPasswordExpiresAt'], areForbbiden);

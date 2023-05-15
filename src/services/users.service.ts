@@ -18,22 +18,7 @@ const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class UsersService{
    
-    async auth(email:string, password:string){
-
-        const user: (IUser | null) = await UsersRepository.getByEmail(email);
-        if(user === null){
-            throw new CustomError(unauthorized.error0, unauthorized.code);
-        };
-        const result: Boolean = await bcrypt.compare(password,user.password);   
-        if(result){
-            return jwt.sign({_id: user.id, email: user.email}, secretJWT, {
-                expiresIn:  '1h'
-            });
-        }
-
-        throw new CustomError(unauthorized.error0, unauthorized.code);
-    }
-
+    
     async getUser(headers: string|undefined, user: Boolean, thirdPartyUserId: string | undefined){
         if(thirdPartyUserId){
             objectIdCheck(thirdPartyUserId);

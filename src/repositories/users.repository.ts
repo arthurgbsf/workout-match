@@ -50,7 +50,7 @@ class UsersRepository{
     removeMyExercise(userId: string, exerciseId: mongoose.Types.ObjectId) {
         return User.updateOne({_id: userId}, {$pull: {myCreatedExercises: exerciseId}});
     }
-
+    
 };
 
 export default  new UsersRepository;

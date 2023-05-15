@@ -1,5 +1,5 @@
 
-import * as Joi from  'joi';
+import Joi from 'joi';
 import {Request, Response, NextFunction} from "express";
 
 export const inputValidator = (validation: Joi.Schema ) => {

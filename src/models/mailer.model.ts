@@ -10,4 +10,4 @@ var transport = nodemailer.createTransport({
     }
 });
 
-export default (transport);
+export default transport ;

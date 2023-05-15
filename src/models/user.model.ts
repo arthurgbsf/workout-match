@@ -2,13 +2,12 @@ import mongoose, { Schema, ObjectId, Types} from "mongoose";
 import moment from "moment";
 
 export interface IUser{ 
-    id?: ObjectId;
+    _id?: ObjectId;
     name: string;
     email: string;
     password: string;
     temporaryPassword?: string;
-    temporaryPasswordExpiresAt:?string;
-
+    temporaryPasswordExpiresAt?: Date | string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     myCreatedWorkouts?: Array<ObjectId>;
