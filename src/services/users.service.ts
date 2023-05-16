@@ -1,11 +1,10 @@
 import { IUser } from "../models/user.model";
 import UsersRepository from "../repositories/users.repository";
 import { CustomError } from "../errors/customError.error";
-import { unauthorized, notFound, conflict, badRequest } from "../errors/errorResponses.error";
+import { notFound, conflict, badRequest } from "../errors/errorResponses.error";
 import {UpdateWriteOpResult } from "mongoose";
 import {DeleteResult} from 'mongodb';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { getUserTokenId } from "../utils/getUserTokenId.util";
 import moment from "moment";
@@ -57,7 +56,6 @@ class UsersService{
         }
 
         if(user.email) {
-            console.log(user.email);
             const email:IUser | null = await UsersRepository.getByEmail(user.email);
             
             if(email){

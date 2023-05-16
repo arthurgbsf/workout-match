@@ -21,7 +21,7 @@ export const authUserSchema = updateUserSchema.fork(
 
 export const forgetPwdUserSchema = updateUserSchema.fork(
     'email', areRequired). fork(
-    ['name', 'email', 'temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
+    ['name', 'password', 'temporaryPassword','temporaryPasswordExpiresAt'], areForbbiden);
 
 export const changePwdUserSchema = updateUserSchema.fork(
     ['temporaryPassword','password', 'password'], areRequired).fork(
