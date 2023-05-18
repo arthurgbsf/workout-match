@@ -3,4 +3,5 @@ checklist
 .vscode
 .env
 .improvements
+dist
 

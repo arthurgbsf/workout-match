@@ -19,7 +19,7 @@ const port = 3000;
 
 connection.then( () => {
     console.log("Database connected");
-    app.listen(port, () => {
+    app.listen(process.env.PORT || port, () => {
         console.log("App online in port: ", port);
     });
 }).catch( (err) => console.log(err));
