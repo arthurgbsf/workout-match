@@ -15,11 +15,11 @@ app.use(routers);
 
 app.use(errorHandler);
 
-const port = 3000;
+let port = process.env.PORT || 3000;
 
 connection.then( () => {
     console.log("Database connected");
-    app.listen(process.env.PORT || port, () => {
+    app.listen(port, () => {
         console.log("App online in port: ", port);
     });
 }).catch( (err) => console.log(err));
