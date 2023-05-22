@@ -2,7 +2,7 @@ import { IUser } from "../models/user.model";
 import crypto from 'crypto';
 import UsersRepository from "../repositories/users.repository";
 import { CustomError } from "../errors/customError.error";
-import { unauthorized, notFound, badRequest } from "../errors/errorResponses.error";
+import { unauthorized, notFound, badRequest, authenticationTimeout } from "../errors/errorResponses.error";
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
@@ -69,17 +69,47 @@ class AuthsService{
         if(result.modifiedCount === 0){
             throw new CustomError(badRequest.error2, badRequest.code);
         };
-
-        
-
-
-
-
-
-
     }
 
+    async changePassword(user: Partial<IUser>){
 
+        if(!user.email || !user.temporaryPassword || !user.password){
+            throw new CustomError(badRequest.error4, badRequest.code);
+        };
+
+        const registeredUser:IUser | null = await UsersRepository.getByEmail(user.email);
+        if(!registeredUser){
+            throw new CustomError(notFound.error0, notFound.code);
+        }
+
+        const {temporaryPasswordExpiresAt, temporaryPassword, _id} = registeredUser
+
+        if(!temporaryPasswordExpiresAt || !temporaryPassword || !_id){
+            throw new CustomError(badRequest.error4, badRequest.code);
+        }
+
+        if(temporaryPasswordExpiresAt <= new Date()){
+            throw new CustomError(authenticationTimeout.error0, authenticationTimeout.code); 
+        }
+
+        const match: Boolean = await bcrypt.compare(user.temporaryPassword, temporaryPassword);
+        
+        if(!match){
+            throw new CustomError(unauthorized.error0, unauthorized.code);
+        }
+
+        const encrypPassword = await bcrypt.hash(user.password, 10);
+
+        const result: UpdateWriteOpResult = await UsersRepository.update(
+            _id.toString(), {password: encrypPassword});
+
+        if(result.matchedCount === 0){
+            throw new CustomError(notFound.error0, notFound.code); 
+        };
+        if(result.modifiedCount === 0){
+            throw new CustomError(badRequest.error2, badRequest.code);
+        };
+    }
 }
 
 export default new AuthsService;

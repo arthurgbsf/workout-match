@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction  } from "express";
 import { inputValidator } from "../middlewares/inputValidator.middleware";
-import { authUserSchema, forgetPwdUserSchema } from "../validations/uses.validation";
+import { authUserSchema, forgetPwdUserSchema, changePwdUserSchema } from "../validations/users.validation";
 import AuthsService from "../services/auths.service";
 
 const router = Router();
@@ -17,6 +17,15 @@ router.post('/forget_password', inputValidator(forgetPwdUserSchema), async (req:
     try {
          await AuthsService.recoveryPassword(req.body);
         return res.status(200).send({ message: 'Email successfully sent.' });
+    } catch (error:any) {
+        next(error);
+    }
+})
+
+router.post('/change_password', inputValidator(changePwdUserSchema), async (req:Request, res:Response, next:NextFunction) => {
+    try {
+         await AuthsService.changePassword(req.body);
+        return res.status(200).send({ message: 'Password successfully changeded.'});
     } catch (error:any) {
         next(error);
     }

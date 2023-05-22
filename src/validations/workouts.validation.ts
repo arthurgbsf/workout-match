@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { areForbbiden, areRequired} from './uses.validation';
+import { areForbbiden, areRequired} from './users.validation';
 
 export const workoutSchema = Joi.object({
     workout: Joi.string(),

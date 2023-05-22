@@ -1,5 +1,5 @@
 import * as Joi from  'joi';
-import { areRequired } from './uses.validation';
+import { areRequired } from './users.validation';
 
 export const updateExerciseSchema = Joi.object({
     exercise: Joi.string(),

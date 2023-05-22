@@ -27,3 +27,8 @@ export const conflict = {
     error0: "Conflict.",
     error1: "Email have already registered."
 };
+
+export const authenticationTimeout = {
+    code:419,
+    error0: "Authentication Timeout."
+};

@@ -7,7 +7,7 @@ export interface IUser{
     email: string;
     password: string;
     temporaryPassword?: string;
-    temporaryPasswordExpiresAt?: Date | string;
+    temporaryPasswordExpiresAt?: Date;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     myCreatedWorkouts?: Array<ObjectId>;
