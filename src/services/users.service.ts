@@ -18,12 +18,8 @@ const secretJWT = process.env.JWT_SECRET_KEY || "";
 class UsersService{
    
     
-    async getUser(headers: string|undefined, user: Boolean, thirdPartyUserId: string | undefined){
-        if(thirdPartyUserId){
-            objectIdCheck(thirdPartyUserId);
-            const thirdPartyUser: IUser = await getByIdAndCheck<IUser>(thirdPartyUserId, UsersRepository.getById);
-            return thirdPartyUser;
-        }
+    async getUser(headers: string|undefined, user: Boolean){
+        
         const userId:string = getUserTokenId(headers, secretJWT);
         const users: Array<IUser> = await UsersRepository.getAll(userId, user, {myCreatedWorkouts: 1, myCreatedExercises:1, name:1, email:1, _id:1});
         if(users.length === 0){
@@ -31,6 +27,13 @@ class UsersService{
         };
         return users;
     };
+
+    async getUserById(headers: string|undefined, userId: string){
+
+        objectIdCheck(userId);
+            const user: IUser = await getByIdAndCheck<IUser>(userId, UsersRepository.getById);
+            return user;
+    }
 
     async create(user: IUser){
 

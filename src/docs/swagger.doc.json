@@ -1,4 +1,4 @@
-{
+{ 
   "openapi": "3.0.0",
   "info": {
     "title": "Workout Match",
@@ -6,16 +6,240 @@
     "contact": {
       "email": "arthurgbsf@gmail.com"
     },
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "servers": [
     {
       "url": "http://localhost:3000",
       "description": "Local Database"
+    },
+    {
+      "url": "https://workout-match.onrender.com/api-docs",
+      "description": "Production Server"
     }
   ],
   "paths": {
-    "/users/authentication": {
+    "/auth/login": {
+      "post": {
+        "description": "Route for authenticate an user.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "joao@example.com",
+                    "password": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An user's 1 hour authorization token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ3ZDljOTcxOTkyMjVmYTNmNjRkYmYiLCJlbWFpbCI6ImpvYW9AZXhhbXBsZS5jb20iLCJpYXQiOjE2ODI0MzExNTMsImV4cCI6MTY4MjQzNDc1M30.rtOo35iXZGI_GjBt589o4dZ6vquDAyF8pmoyKRa-YTY"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email and Password are required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "error - miss password": {
+                    "value": {
+                      "message": "The following fields are required: password."
+                    }
+                  },
+                  "error - miss email": {
+                    "value": {
+                      "message": "The following fields are required: email."
+                    }
+                  },
+                  "error - miss email and password": {
+                    "value": {
+                      "message": "The following fields are required: email, password."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "User not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "407": {
+            "description": "Authentication failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "Authentication failed."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/forget_password": {
+      "post": {
+        "description": "Route for authenticate an user.",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "email": "joao@example.com",
+                    "password": "123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An user's 1 hour authorization token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "token": {
+                    "value": {
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ3ZDljOTcxOTkyMjVmYTNmNjRkYmYiLCJlbWFpbCI6ImpvYW9AZXhhbXBsZS5jb20iLCJpYXQiOjE2ODI0MzExNTMsImV4cCI6MTY4MjQzNDc1M30.rtOo35iXZGI_GjBt589o4dZ6vquDAyF8pmoyKRa-YTY"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email and Password are required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "error - miss password": {
+                    "value": {
+                      "message": "The following fields are required: password."
+                    }
+                  },
+                  "error - miss email": {
+                    "value": {
+                      "message": "The following fields are required: email."
+                    }
+                  },
+                  "error - miss email and password": {
+                    "value": {
+                      "message": "The following fields are required: email, password."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "User not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "407": {
+            "description": "Authentication failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "Authentication failed."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/change_password": {
       "post": {
         "description": "Route for authenticate an user.",
         "tags": [
@@ -127,111 +351,16 @@
     },
     "/users": {
       "get": {
-        "description": "Route to get all users registered.",
-        "tags": [
-          "Users"
+        "parameters": [{
+          "in":"query", 
+          "name": "user", 
+          "required": false,
+          "schema":{"type": "boolean"},
+        "description": "Optional. Pass 'user = true' to get the logged user information."}
         ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Users"
-                },
-                "examples": {
-                  "users": {
-                    "value": [
-                      {
-                        "_id": "6447d9c97199225fa3f64dbf",
-                        "name": "João da Silva",
-                        "email": "joao@example.com"
-                      },
-                      {
-                        "_id": "447dad1700fd6d9a7616033",
-                        "name": "Maria Oliveira",
-                        "email": "maria@example.com"
-                      },
-                      {
-                        "_id": "6447dae4700fd6d9a7616036",
-                        "name": "Carlos Santos",
-                        "email": "carlos@example.com"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Bad Request."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized. Errors related to the process of getting the token in the header and decoding it.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "error - unauthorized": {
-                    "value": {
-                      "message": "Unauthorized."
-                    }
-                  },
-                  "error - denied acess": {
-                    "value": {
-                      "message": "Denied acess."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No users registered.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "No users registered."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/user": {
-      "get": {
-        "description": "Route to get the authenticated user information.",
+        "description": "Route to get users information.",
         "tags": [
-          "User"
+        "User"
         ],
         "security": [
           {
@@ -299,7 +428,90 @@
             "description": "User not found."
           }
         }
-      },
+      }
+    },
+    "/users/user/{id}": {
+      "get": {
+        "parameters": [{
+          "in":"path", 
+          "name": "id", 
+          "required": true,
+          "schema":{"type": "string"},
+        "description": "Pass an 'id' to get a thirdparty user information."}
+        ],
+        "description": "Route to get user iformation by 'id'.",
+        "tags": [
+        "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                },
+                "examples": {
+                  "users": {
+                    "value": {
+                      "_id": "6447d9c97199225fa3f64dbf",
+                      "name": "João da Silva",
+                      "email": "joao@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jwt Token expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "menssage": {
+                    "value": {
+                      "menssage": "jwt expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Denied Acess. Authentication is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "menssage": {
+                    "value": {
+                      "menssage": "Denied acess."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
+          }
+        }
+      }
+    },
+    "/users/user": {
       "post": {
         "description": "Route to create an user.",
         "tags": [
@@ -550,6 +762,13 @@
     },
     "/exercises": {
       "get": {
+        "parameters": [{
+          "in":"query", 
+          "name": "user", 
+          "required": false,
+          "schema":{"type": "boolean"},
+        "description": "Optional. Pass 'user = true' to get the logged user exercises."}
+        ],
         "description": "Route to get all users exercises registered. Exercises copied by an user not appear in this request.",
         "tags": [
           "Exercises"
@@ -616,7 +835,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/exercises/exercise": {
       "post": {
         "description": "Route to create an enxercise.",
         "tags": [
@@ -704,7 +925,7 @@
         }
       }
     },
-    "/exercises/{id}": {
+    "/exercises/exercise/{id}": {
       "parameters": [
         {
           "in": "path",
@@ -822,7 +1043,7 @@
         }
       },
       "delete": {
-        "description": "Route to delete an exercise.",
+        "description": "Route to delete an exercise by id.",
         "tags": [
           "Exercises"
         ],
@@ -912,85 +1133,15 @@
         }
       }
     },
-    "/exercises/user": {
-      "get": {
-        "description": "Route to get all registered and copied user's exercises.",
-        "tags": [
-          "Exercises"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Exercises"
-                  }
-                },
-                "examples": {
-                  "exercises": {
-                    "value": [
-                      {
-                        "_id": "644a87ae01fbb12d48cdc459",
-                        "exercise": "Push ups",
-                        "sets": "5",
-                        "reps": "15",
-                        "type": "push",
-                        "createdBy": "644a7cff0ff85088d51fcb46",
-                        "createdAt": "27/04/2023 às 11:33:18 ",
-                        "copiedExerciseId": "644a7d690ff85088d51fcb4c",
-                        "inWorkouts": [
-                          "644a87af01fbb12d48cdc462"
-                        ]
-                      },
-                      {
-                        "_id": "644a87ae01fbb12d48cdc45b",
-                        "exercise": "Australian Pull ups",
-                        "sets": "3",
-                        "reps": "8",
-                        "type": "pull",
-                        "createdBy": "644a7cff0ff85088d51fcb46",
-                        "createdAt": "27/04/2023 às 11:33:18 ",
-                        "copiedExerciseId": "644a7d960ff85088d51fcb4f",
-                        "inWorkouts": [
-                          "644a87af01fbb12d48cdc462"
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "There aren't exercises created or copied. No user registered exercise.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "error": {
-                    "value": {
-                      "message": "No exercises created or copied."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/workouts": {
       "get": {
+        "parameters": [{
+          "in":"query", 
+          "name": "user", 
+          "required": false,
+          "schema":{"type": "boolean"},
+        "description": "Optional. Pass 'user = true' to get the logged user workouts."}
+        ],
         "description": "Route to get all users workouts registered. Workout created by user not appear in this request.",
         "tags": [
           "Workouts"
@@ -1035,7 +1186,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/workouts/workout": {
       "post": {
         "description": "Route to create an workout.",
         "tags": [
@@ -1179,7 +1332,7 @@
         }
       },
       "put": {
-        "description": "Route to update an workout. It is possible to add or remove exercises, including the id in the exercises array or removing the id.",
+        "description": "Route to update an workout by Id. It is possible to add or remove exercises, including the id in the exercises array or removing the id.",
         "tags": [
           "Workouts"
         ],
@@ -1335,60 +1488,6 @@
           }
         }
       }
-    },
-    "/workouts/user":{
-      "get": {
-        "description": "Route to get all registered and copied user's workouts.",
-        "tags": [
-          "Workouts"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Workouts"
-                  }
-                },
-                "examples": {
-                  "exercises": {
-                    "$ref": "#/components/examples/workouts"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/400-ObjectIdCheck"
-          },
-          "404": {
-            "description": "Workout not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "error": {
-                    "value": {
-                      "message": "Workout not found."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
     }
   },
   "components": {

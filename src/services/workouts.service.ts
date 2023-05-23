@@ -16,23 +16,28 @@ import ExercisesRepository from "../repositories/exercises.repository";
 import { getByIdAndCheck } from "../utils/getByIdAndCheck.util";
 import { updateInWorkouts } from "../utils/updateInWorkouts.util";
 
+
 dotenv.config();
 const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class WorkoutsService{
 
-    async getWorkout(headers:(string|undefined), user: Boolean, workoutId:(string|undefined)){
-        if(workoutId){
-            objectIdCheck(workoutId);
-            const workout: IWorkout = await getByIdAndCheck<IWorkout>(workoutId, WorkoutsRepository.getById);
-            return workout;
-        }; 
+    async getWorkout(headers:(string|undefined), user: Boolean){
+
         const userId:string = getUserTokenId(headers, secretJWT);
         const workouts: Array<IWorkout> = await WorkoutsRepository.getAll(userId, user);
         if(workouts.length === 0){
             throw new CustomError(notFound.error1, notFound.code);
         };
         return workouts;
+    };
+
+    async getWorkoutById(headers:(string|undefined), workoutId: string){
+      
+        objectIdCheck(workoutId);
+        const workout: IWorkout = await getByIdAndCheck<IWorkout>(workoutId, WorkoutsRepository.getById);
+        return workout;
+        
     };
 
     async create(workout: IWorkout, headers:(string|undefined)){

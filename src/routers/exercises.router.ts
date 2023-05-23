@@ -6,18 +6,27 @@ import { inputValidator } from "../middlewares/inputValidator.middleware";
 
 const router = Router();
 
-router.get('/:id?', auth, async (req:Request, res:Response,  next:NextFunction) => {
+router.get('/', auth, async (req:Request, res:Response,  next:NextFunction) => {
     try {
-        const exerciseId: string | undefined = req.params.id ? req.params.id : undefined;
         const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
-        const exercises = await ExercisesService.getExercise(req.headers['authorization'], user, exerciseId);
+        const exercises = await ExercisesService.getExercise(req.headers['authorization'], user);
         return res.status(200).send(exercises);
     } catch (error:any) {
         next(error);
     }
 });
 
-router.post('/', auth, inputValidator(createExerciseSchema), async (req:Request, res:Response, next:NextFunction) => {
+router.get('/exercise/:id', auth, async (req:Request, res:Response,  next:NextFunction) => {
+    try {
+        const exercise = await ExercisesService.getExerciseById(req.headers['authorization'], req.params.id);
+        return res.status(200).send(exercise);
+    } catch (error:any) {
+        next(error);
+    }
+});
+
+
+router.post('/exercise', auth, inputValidator(createExerciseSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         await ExercisesService.create(req.body, req.headers['authorization']);
         return res.status(201).send({message:"Exercise created."});
@@ -26,7 +35,7 @@ router.post('/', auth, inputValidator(createExerciseSchema), async (req:Request,
     }
 });
 
-router.post('/:id', auth, async (req:Request, res:Response, next:NextFunction) => {
+router.post('/exercise/:id', auth, async (req:Request, res:Response, next:NextFunction) => {
     try {
         await ExercisesService.copy(req.headers['authorization'], req.params.id);
         return res.status(201).send({message: "Copied with success."});
@@ -35,7 +44,7 @@ router.post('/:id', auth, async (req:Request, res:Response, next:NextFunction) =
     }
 });
 
-router.put('/:id', auth, inputValidator(updateExerciseSchema), async (req:Request, res:Response, next:NextFunction) => {
+router.put('/exercise/:id', auth, inputValidator(updateExerciseSchema), async (req:Request, res:Response, next:NextFunction) => {
     try {
         await ExercisesService.update(req.body, req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"Exercise updated. "}); 
@@ -44,7 +53,7 @@ router.put('/:id', auth, inputValidator(updateExerciseSchema), async (req:Reques
     }
 });
 
-router.delete('/:id', auth, async (req:Request, res:Response, next:NextFunction) => {
+router.delete('/exercise/:id', auth, async (req:Request, res:Response, next:NextFunction) => {
     try {
         await ExercisesService.remove( req.headers['authorization'], req.params.id);
         return res.status(200).send({message:"The exercise was deleted with success."}); 

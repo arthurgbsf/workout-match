@@ -6,12 +6,20 @@ import { createUserSchema, updateUserSchema } from "../validations/users.validat
 
 const router = Router();
 
-router.get('/:id?', auth, async (req:Request, res:Response, next:NextFunction) => {
+router.get('/', auth, async (req:Request, res:Response, next:NextFunction) => {
     try {
-        const userId: string | undefined = req.params.id ? req.params.id : undefined;
         const user: Boolean = req.query.user ? Boolean(req.query.user) : false;
-        const users = await UsersService.getUser(req.headers['authorization'], user, userId);
+        const users = await UsersService.getUser(req.headers['authorization'], user);
         return res.status(200).send(users);
+    } catch (error:any) {
+        next(error);
+    }
+});
+
+router.get('/user/:id', auth, async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        const user = await UsersService.getUserById(req.headers['authorization'], req.params.id);
+        return res.status(200).send(user);
     } catch (error:any) {
         next(error);
     }

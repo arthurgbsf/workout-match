@@ -17,17 +17,20 @@ const secretJWT = process.env.JWT_SECRET_KEY || "";
 
 class ExercisesService{
 
-    async getExercise(headers: string|undefined , user: Boolean, exerciseId: string | undefined){
-        if(exerciseId){
-            objectIdCheck(exerciseId);
-            const exercise: IExercise = await getByIdAndCheck<IExercise>(exerciseId, ExercisesRepository.getById);
-            return exercise;
-        }; 
+    async getExercise(headers: string|undefined , user: Boolean){
+
         const userId:string = getUserTokenId(headers, secretJWT);
         const exercise: Array<IExercise> = await ExercisesRepository.getAll(userId, user);
         if(exercise.length === 0){
             throw new CustomError(notFound.error1, notFound.code);
         };
+        return exercise;
+    };
+    
+    async getExerciseById(headers: string|undefined , exerciseId: string ){
+
+        objectIdCheck(exerciseId);
+        const exercise: IExercise = await getByIdAndCheck<IExercise>(exerciseId, ExercisesRepository.getById);
         return exercise;
     };
 

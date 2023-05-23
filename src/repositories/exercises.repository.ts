@@ -26,7 +26,6 @@ class ExercisesRepository{
 
     addInWorkout(exerciseId: mongoose.Types.ObjectId, workoutId: ObjectId |  mongoose.Types.ObjectId) {
         return Exercise.updateOne({ _id: exerciseId, inWorkouts: { $nin: [workoutId] } }, { $addToSet: { inWorkouts: workoutId } });
-
     }
 
     removeInWorkout(exerciseId: mongoose.Types.ObjectId, workoutId: ObjectId | mongoose.Types.ObjectId) {

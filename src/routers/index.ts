@@ -8,7 +8,7 @@ import exercisesRouter from './exercises.router';
 
 const router = Router();
 
-router.use('/', authRouter);
+router.use('/auth', authRouter);
 
 router.use('/users', usersRouter);
 
