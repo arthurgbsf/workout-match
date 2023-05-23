@@ -1,4 +1,4 @@
-{ 
+{
   "openapi": "3.0.0",
   "info": {
     "title": "Workout Match",
@@ -351,16 +351,20 @@
     },
     "/users": {
       "get": {
-        "parameters": [{
-          "in":"query", 
-          "name": "user", 
-          "required": false,
-          "schema":{"type": "boolean"},
-        "description": "Optional. Pass 'user = true' to get the logged user information."}
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Optional. Pass 'user = true' to get the logged user information."
+          }
         ],
         "description": "Route to get users information.",
         "tags": [
-        "User"
+          "User"
         ],
         "security": [
           {
@@ -432,16 +436,20 @@
     },
     "/users/user/{id}": {
       "get": {
-        "parameters": [{
-          "in":"path", 
-          "name": "id", 
-          "required": true,
-          "schema":{"type": "string"},
-        "description": "Pass an 'id' to get a thirdparty user information."}
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pass an 'id' to get a thirdparty user information."
+          }
         ],
         "description": "Route to get user iformation by 'id'.",
         "tags": [
-        "User"
+          "User"
         ],
         "security": [
           {
@@ -762,12 +770,16 @@
     },
     "/exercises": {
       "get": {
-        "parameters": [{
-          "in":"query", 
-          "name": "user", 
-          "required": false,
-          "schema":{"type": "boolean"},
-        "description": "Optional. Pass 'user = true' to get the logged user exercises."}
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Optional. Pass 'user = true' to get the logged user exercises."
+          }
         ],
         "description": "Route to get all users exercises registered. Exercises copied by an user not appear in this request.",
         "tags": [
@@ -1135,12 +1147,16 @@
     },
     "/workouts": {
       "get": {
-        "parameters": [{
-          "in":"query", 
-          "name": "user", 
-          "required": false,
-          "schema":{"type": "boolean"},
-        "description": "Optional. Pass 'user = true' to get the logged user workouts."}
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Optional. Pass 'user = true' to get the logged user workouts."
+          }
         ],
         "description": "Route to get all users workouts registered. Workout created by user not appear in this request.",
         "tags": [
@@ -1647,8 +1663,26 @@
       }
     },
     "responses": {
-      "400-ObjectIdCheck": {
-        "description": "Id passed as parameter is invalid.",
+      "400-error0": {
+        "description": "Bad Request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message": "Bad Request."
+                }
+              }
+            }
+          }
+        }
+      },
+      "400-error1": {
+        "description": "Invalid Id.",
         "content": {
           "application/json": {
             "schema": {
@@ -1665,51 +1699,216 @@
           }
         }
       },
-      "404-getExerciseByIdAndCheck": {
-        "description": "Exercise not found in database.",
+      "400-error2": {
+        "description": "Not Modified.",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object"
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
             },
             "examples": {
               "error": {
                 "value": {
-                  "message": "Exercise not found."
+                  "message": "Not Modified."
                 }
               }
             }
           }
         }
       },
-      "401-ifParamIdIsUserIdCheck": {
-        "description": "Id passed as parameter not linked to the user.",
+      "400-error3": {
+        "description":"Not Deleted.",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object"
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
             },
             "examples": {
               "error": {
                 "value": {
-                  "message": "This id is not linked to this user."
+                  "message":"Not Deleted."
                 }
               }
             }
           }
         }
       },
-      "404-getWorkoutByIdAndCheck": {
-        "description": "Workout not found in database.",
+      "400-error4": {
+        "description":"Undefined.",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object"
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
             },
             "examples": {
               "error": {
                 "value": {
-                  "message": "Workout not found."
+                  "message":"Undefined."
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-error0": {
+        "description":"Unauthorized.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"Unauthorized."
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-error1": {
+        "description":"To create a workout is required have exercises.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"To create a workout is required have exercises."
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-error2": {
+        "description":"Is required at least one exercise.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"Is required at least one exercise."
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-error3": {
+        "description":"There are no copied exercises in your request body.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"There are no copied exercises in your request body."
+                }
+              }
+            }
+          }
+        }
+      },
+      "404-error0": {
+        "description":"Not Found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"Not Found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "404-error1": {
+        "description":"No registers.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"No registers."
+                }
+              }
+            }
+          }
+        }
+      },
+      "409-error0": {
+        "description": "Conflict.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message": "Conflict."
+                }
+              }
+            }
+          }
+        }
+      },
+      "409-error1": {
+        "description": "Email have already registered.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message": "Email have already registered."
+                }
+              }
+            }
+          }
+        }
+      },
+      "419-error0": {
+        "description":"Authentication Timeout.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "value": {
+                  "message":"Authentication Timeout."
                 }
               }
             }
