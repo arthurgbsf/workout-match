@@ -1666,7 +1666,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"Unauthorized."
+                  "$ref": "#/components/examples/401error0"
                 }
               }
             }
@@ -1684,7 +1684,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"To create a workout is required have exercises."
+                  "$ref": "#/components/examples/401error1"
                 }
               }
             }
@@ -1702,7 +1702,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"Is required at least one exercise."
+                  "$ref": "#/components/examples/401error2"
                 }
               }
             }
@@ -1720,7 +1720,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"There are no copied exercises in your request body."
+                  "$ref": "#/components/examples/401error3"
                 }
               }
             }
@@ -1738,7 +1738,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"Not Found."
+                  "$ref": "#/components/examples/404error0"
                 }
               }
             }
@@ -1756,7 +1756,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"No registers."
+                  "$ref": "#/components/examples/404error1"
                 }
               }
             }
@@ -1774,7 +1774,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message": "Conflict."
+                  "$ref": "#/components/examples/409error0"
                 }
               }
             }
@@ -1792,7 +1792,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message": "Email have already registered."
+                  "$ref": "#/components/examples/409error1"
                 }
               }
             }
@@ -1810,7 +1810,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"Authentication Timeout."
+                  "$ref": "#/components/examples/419error0"
                 }
               }
             }
@@ -1934,6 +1934,51 @@
       "400error4": {
         "value": {
           "message":"Undefined."
+        }
+      },
+      "401error0": {
+        "value": {
+          "message":"To create a workout is required have exercises."
+        }
+      },
+      "401error1": {
+        "value": {
+          "message":"To create a workout is required have exercises."
+        }
+      },
+      "401error2": {
+        "value": {
+          "message":"Is required at least one exercise."
+        }
+      },
+      "401error3": {
+        "value": {
+          "message":"There are no copied exercises in your request body."
+        }
+      },
+      "404error0": {
+        "value": {
+          "message":"Not Found."
+        }
+      },
+      "404error1": {
+        "value": {
+          "message":"No registers."
+        }
+      },
+      "409error0": {
+        "value": {
+          "message": "Conflict."
+        }
+      },
+      "409error1": {
+        "value": {
+          "message": "Email have already registered."
+        }
+      },
+      "419error0": {
+        "value": {
+          "message":"Authentication Timeout."
         }
       },
       "invalid-id": {
