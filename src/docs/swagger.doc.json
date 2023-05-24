@@ -65,67 +65,9 @@
               }
             }
           },
-          "400": {
-            "description": "Email and Password are required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "error - miss password": {
-                    "value": {
-                      "message": "The following fields are required: password."
-                    }
-                  },
-                  "error - miss email": {
-                    "value": {
-                      "message": "The following fields are required: email."
-                    }
-                  },
-                  "error - miss email and password": {
-                    "value": {
-                      "message": "The following fields are required: email, password."
-                    }
-                  }
+          "401": {
+            "$ref":"#/components/responses/401-error0"
                 }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "User not found."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "407": {
-            "description": "Authentication failed.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Authentication failed."
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -176,49 +118,9 @@
             }
           },
           "400": {
-            "description": "Email and Password are required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
+            "$ref": "#/components/responses/400-error4"
                 },
-                "examples": {
-                  "error - miss password": {
-                    "value": {
-                      "message": "The following fields are required: password."
-                    }
-                  },
-                  "error - miss email": {
-                    "value": {
-                      "message": "The following fields are required: email."
-                    }
-                  },
-                  "error - miss email and password": {
-                    "value": {
-                      "message": "The following fields are required: email, password."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "User not found."
-                    }
-                  }
-                }
-              }
-            }
-          },
+                
           "407": {
             "description": "Authentication failed.",
             "content": {
@@ -1673,8 +1575,8 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "message": "Bad Request."
+                "value":{
+                "$ref": "#/components/examples/400error0"
                 }
               }
             }
@@ -1692,7 +1594,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message": "Invalid Id."
+                  "$ref": "#/components/examples/400error1"
                 }
               }
             }
@@ -1705,12 +1607,12 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "$ref": "#/components/schemas/Message"
+              "$ref":"#/components/schemas/Message"
             },
             "examples": {
               "error": {
                 "value": {
-                  "message": "Not Modified."
+                  "$ref":"#/components/examples/400error2"
                 }
               }
             }
@@ -1728,7 +1630,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"Not Deleted."
+                  "$ref": "#/components/examples/400error3"
                 }
               }
             }
@@ -1746,7 +1648,7 @@
             "examples": {
               "error": {
                 "value": {
-                  "message":"Undefined."
+                  "$ref": "#/components/examples/400error4"
                 }
               }
             }
@@ -1915,6 +1817,7 @@
           }
         }
       }
+
     },
     "requestBodies": {
       "exerciseUpdateExamples": {
@@ -2008,6 +1911,31 @@
       }
     },
     "examples": {
+      "400error0": {
+        "value": {
+          "message": "Bad Request."
+        }
+      },
+      "400error1": {
+        "value": {
+          "message": "Invalid Id."
+        }
+      },
+      "400error2": {
+        "value": {
+          "message": "Not Modified."
+        }
+      },
+      "400error3": {
+        "value": {
+          "message":"Not Deleted."
+        }
+      },
+      "400error4": {
+        "value": {
+          "message":"Undefined."
+        }
+      },
       "invalid-id": {
         "value": {
           "message": "Invalid Id."
