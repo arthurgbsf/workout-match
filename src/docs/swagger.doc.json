@@ -66,8 +66,8 @@
             }
           },
           "401": {
-            "$ref":"#/components/responses/401-error0"
-                }
+            "$ref": "#/components/responses/401-error0"
+          }
         }
       }
     },
@@ -118,25 +118,26 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400-error4"
-                },
-                
-          "407": {
-            "description": "Authentication failed.",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Authentication failed."
-                    }
+                  "error02": {
+                    "$ref": "#/components/examples/400error2"
+                  },
+                  "error04": {
+                    "$ref": "#/components/examples/400error4"
                   }
                 }
               }
             }
+          },
+          "404": {
+            "$ref": "#/components/responses/404-error0"
           }
         }
       }
@@ -188,65 +189,32 @@
             }
           },
           "400": {
-            "description": "Email and Password are required.",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error - miss password": {
-                    "value": {
-                      "message": "The following fields are required: password."
-                    }
+                  "error02": {
+                    "$ref": "#/components/examples/400error2"
                   },
-                  "error - miss email": {
-                    "value": {
-                      "message": "The following fields are required: email."
-                    }
-                  },
-                  "error - miss email and password": {
-                    "value": {
-                      "message": "The following fields are required: email, password."
-                    }
+                  "error04": {
+                    "$ref": "#/components/examples/400error4"
                   }
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
           },
           "404": {
-            "description": "User not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "User not found."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/404-error0"
           },
-          "407": {
-            "description": "Authentication failed.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Authentication failed."
-                    }
-                  }
-                }
-              }
-            }
+          "419": {
+            "$ref": "#/components/responses/419-error0"
           }
         }
       }
@@ -1575,9 +1543,7 @@
             },
             "examples": {
               "error": {
-                "value":{
                 "$ref": "#/components/examples/400error0"
-                }
               }
             }
           }
@@ -1593,9 +1559,7 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/400error1"
-                }
+                "$ref": "#/components/examples/400error1"
               }
             }
           }
@@ -1607,20 +1571,18 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "$ref":"#/components/schemas/Message"
+              "$ref": "#/components/schemas/Message"
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref":"#/components/examples/400error2"
-                }
+                "$ref": "#/components/examples/400error2"
               }
             }
           }
         }
       },
       "400-error3": {
-        "description":"Not Deleted.",
+        "description": "Not Deleted.",
         "content": {
           "application/json": {
             "schema": {
@@ -1629,16 +1591,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/400error3"
-                }
+                "$ref": "#/components/examples/400error3"
               }
             }
           }
         }
       },
       "400-error4": {
-        "description":"Undefined.",
+        "description": "Undefined.",
         "content": {
           "application/json": {
             "schema": {
@@ -1647,16 +1607,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/400error4"
-                }
+                "$ref": "#/components/examples/400error4"
               }
             }
           }
         }
       },
       "401-error0": {
-        "description":"Unauthorized.",
+        "description": "Unauthorized.",
         "content": {
           "application/json": {
             "schema": {
@@ -1665,16 +1623,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/401error0"
-                }
+                "$ref": "#/components/examples/401error0"
               }
             }
           }
         }
       },
       "401-error1": {
-        "description":"To create a workout is required have exercises.",
+        "description": "To create a workout is required have exercises.",
         "content": {
           "application/json": {
             "schema": {
@@ -1683,16 +1639,14 @@
             },
             "examples": {
               "error": {
-                "value": {
                   "$ref": "#/components/examples/401error1"
-                }
               }
             }
           }
         }
       },
       "401-error2": {
-        "description":"Is required at least one exercise.",
+        "description": "Is required at least one exercise.",
         "content": {
           "application/json": {
             "schema": {
@@ -1701,16 +1655,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/401error2"
-                }
+                "$ref": "#/components/examples/401error2"
               }
             }
           }
         }
       },
       "401-error3": {
-        "description":"There are no copied exercises in your request body.",
+        "description": "There are no copied exercises in your request body.",
         "content": {
           "application/json": {
             "schema": {
@@ -1719,16 +1671,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/401error3"
-                }
+                "$ref": "#/components/examples/401error3"
               }
             }
           }
         }
       },
       "404-error0": {
-        "description":"Not Found.",
+        "description": "Not Found.",
         "content": {
           "application/json": {
             "schema": {
@@ -1737,16 +1687,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/404error0"
-                }
+                "$ref": "#/components/examples/404error0"
               }
             }
           }
         }
       },
       "404-error1": {
-        "description":"No registers.",
+        "description": "No registers.",
         "content": {
           "application/json": {
             "schema": {
@@ -1755,9 +1703,7 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/404error1"
-                }
+                "$ref": "#/components/examples/404error1"
               }
             }
           }
@@ -1773,9 +1719,7 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/409error0"
-                }
+                "$ref": "#/components/examples/409error0"
               }
             }
           }
@@ -1791,16 +1735,14 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/409error1"
-                }
+                "$ref": "#/components/examples/409error1"
               }
             }
           }
         }
       },
       "419-error0": {
-        "description":"Authentication Timeout.",
+        "description": "Authentication Timeout.",
         "content": {
           "application/json": {
             "schema": {
@@ -1809,15 +1751,12 @@
             },
             "examples": {
               "error": {
-                "value": {
-                  "$ref": "#/components/examples/419error0"
-                }
+                "$ref": "#/components/examples/419error0"
               }
             }
           }
         }
       }
-
     },
     "requestBodies": {
       "exerciseUpdateExamples": {
@@ -1928,42 +1867,42 @@
       },
       "400error3": {
         "value": {
-          "message":"Not Deleted."
+          "message": "Not Deleted."
         }
       },
       "400error4": {
         "value": {
-          "message":"Undefined."
+          "message": "Undefined."
         }
       },
       "401error0": {
         "value": {
-          "message":"To create a workout is required have exercises."
+          "message": "Unauthorized."
         }
       },
       "401error1": {
         "value": {
-          "message":"To create a workout is required have exercises."
+          "message": "To create a workout is required have exercises."
         }
       },
       "401error2": {
         "value": {
-          "message":"Is required at least one exercise."
+          "message": "Is required at least one exercise."
         }
       },
       "401error3": {
         "value": {
-          "message":"There are no copied exercises in your request body."
+          "message": "There are no copied exercises in your request body."
         }
       },
       "404error0": {
         "value": {
-          "message":"Not Found."
+          "message": "Not Found."
         }
       },
       "404error1": {
         "value": {
-          "message":"No registers."
+          "message": "No registers."
         }
       },
       "409error0": {
@@ -1978,7 +1917,7 @@
       },
       "419error0": {
         "value": {
-          "message":"Authentication Timeout."
+          "message": "Authentication Timeout."
         }
       },
       "invalid-id": {
