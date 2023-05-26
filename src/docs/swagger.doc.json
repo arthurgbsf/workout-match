@@ -264,42 +264,8 @@
               }
             }
           },
-          "400": {
-            "description": "Jwt Token expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "jwt expired"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Denied Acess. Authentication is required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "Denied acess."
-                    }
-                  }
-                }
-              }
-            }
-          },
           "404": {
-            "description": "User not found."
+            "$ref": "#/components/responses/404-error1"
           }
         }
       }
@@ -350,41 +316,10 @@
             }
           },
           "400": {
-            "description": "Jwt Token expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "jwt expired"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Denied Acess. Authentication is required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "Denied acess."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/400-error1"
           },
           "404": {
-            "description": "User not found."
+            "$ref": "#/components/responses/404-error0"
           }
         }
       }
@@ -432,39 +367,8 @@
               }
             }
           },
-          "401": {
-            "description": "Name, email and password are required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "Name, email and password are required."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Email have already registered.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "Email have already registered."
-                    }
-                  }
-                }
-              }
-            }
+          "409": {
+            "$ref": "#/components/responses/409-error1"
           }
         }
       },
@@ -533,55 +437,33 @@
             }
           },
           "400": {
-            "description": "Is just allowed to update name email and password.",
+            "$ref": "#/components/responses/400-error2"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
+          },
+          "404": {
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Message"
-                  }
+                  "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Is just allowed to update name email and password."
-                    }
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
                   }
                 }
               }
             }
           },
-          "404": {
-            "description": "Email already registered.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Message"
-                  }
-                },
-                "examples": {
-                  "message 01": {
-                    "value": {
-                      "message": "Email already registered."
-                    }
-                  },
-                  "message 02": {
-                    "value": {
-                      "message": "User not found."
-                    }
-                  },
-                  "message 03": {
-                    "value": {
-                      "message": "User not modified."
-                    }
-                  }
-                }
-              }
-            }
-          }
+          "409": {
+            "$ref": "#/components/responses/409-error1"
+          }       
         }
       },
       "delete": {
@@ -616,24 +498,13 @@
             }
           },
           "400": {
-            "description": "User wasn't deleted.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Message"
-                  }
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "User wasn't deleted."
-                    }
-                  }
-                }
-              }
-            }
+           "$ref": "#/components/responses/400-error3"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
+           },
+          "404": {
+          "$ref": "#/components/responses/404-error2"
           }
         }
       }
@@ -1709,6 +1580,22 @@
           }
         }
       },
+      "404-error2": {
+        "description": "Token not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "error": {
+                "$ref": "#/components/examples/404error2"
+              }
+            }
+          }
+        }
+      },
       "409-error0": {
         "description": "Conflict.",
         "content": {
@@ -1903,6 +1790,11 @@
       "404error1": {
         "value": {
           "message": "No registers."
+        }
+      },
+      "404error2": {
+        "value": {
+          "message": "Token not found."
         }
       },
       "409error0": {
