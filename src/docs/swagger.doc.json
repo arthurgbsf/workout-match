@@ -569,8 +569,11 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
+          },
           "404": {
-            "description": "There aren't exercises available. No user registered exercises.",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -578,98 +581,11 @@
                   "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error": {
-                    "value": {
-                      "message": "No exercises avaible."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/exercises/exercise": {
-      "post": {
-        "description": "Route to create an enxercise.",
-        "tags": [
-          "Exercises"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Exercise"
-              },
-              "examples": {
-                "exercise": {
-                  "value": {
-                    "exercise": "Pull up",
-                    "sets": "5",
-                    "reps": "10",
-                    "type": "pull"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "The request was successful. The exercise was created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Exercise created."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Error due to missing required fields provided by the client side.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "miss exercise field": {
-                    "value": {
-                      "message": "The following fields are required: exercise."
-                    }
+                  "error01": {
+                    "$ref": "#/components/examples/404error1"
                   },
-                  "miss sets field": {
-                    "value": {
-                      "message": "The following fields are required: sets."
-                    }
-                  },
-                  "miss reps field": {
-                    "value": {
-                      "message": "The following fields are required: reps."
-                    }
-                  },
-                  "miss type fields": {
-                    "value": {
-                      "message": "The following fields are required: type."
-                    }
-                  },
-                  "miss all fields": {
-                    "value": {
-                      "message": "The following fields are required: exercise, sets, reps, type."
-                    }
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
                   }
                 }
               }
@@ -729,10 +645,10 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400-ObjectIdCheck"
+            "$ref": "#/components/responses/400-error1"
           },
           "404": {
-            "$ref": "#/components/responses/404-getExerciseByIdAndCheck"
+            "$ref": "#/components/responses/404-error0"
           }
         }
       },
@@ -769,7 +685,7 @@
             }
           },
           "400": {
-            "description": "Id passed as parameter is invalid or the exercise wasn't updated.",
+            "description":"Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -777,21 +693,37 @@
                   "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error - invalid id": {
-                    "$ref": "#/components/examples/invalid-id"
+                  "error01": {
+                    "$ref": "#/components/examples/400error1"
                   },
-                  "error - not updated": {
-                    "$ref": "#/components/examples/not-updated"
+                  "error02": {
+                    "$ref": "#/components/examples/400error2"
                   }
                 }
               }
             }
           },
           "401": {
-            "$ref": "#/components/responses/401-ifParamIdIsUserIdCheck"
+            "$ref":"#/components/responses/401-error0"
           },
           "404": {
-            "$ref": "#/components/responses/404-getExerciseByIdAndCheck"
+            "description":"Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -824,28 +756,43 @@
             }
           },
           "400": {
-            "description": "Id passed as parameter is invalid or the exercise wasn't deleted.",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
                 },
                 "examples": {
-                  "error - invalid id": {
-                    "$ref": "#/components/examples/invalid-id"
+                  "error01": {
+                    "$ref": "#/components/examples/400error1"
                   },
-                  "error - not deleted": {
-                    "$ref": "#/components/examples/not-deleted"
+                  "error03": {
+                    "$ref": "#/components/examples/400error3"
                   }
                 }
               }
             }
           },
           "401": {
-            "$ref": "#/components/responses/401-ifParamIdIsUserIdCheck"
+            "$ref": "#/components/responses/401-error0"
           },
           "404": {
-            "$ref": "#/components/responses/404-getExerciseByIdAndCheck"
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -878,10 +825,88 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400-ObjectIdCheck"
+            "$ref": "#/components/responses/400-error1"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
           },
           "404": {
-            "$ref": "#/components/responses/404-getExerciseByIdAndCheck"
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exercises/exercise": {
+      "post": {
+        "description": "Route to create an enxercise.",
+        "tags": [
+          "Exercises"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Exercise"
+              },
+              "examples": {
+                "exercise": {
+                  "value": {
+                    "exercise": "Pull up",
+                    "sets": "5",
+                    "reps": "10",
+                    "type": "pull"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The request was successful. The exercise was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "message": {
+                    "value": {
+                      "message": "Exercise created."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "$ref": "#/components/responses/400-error4"
+          },
+          "401":{
+            "$ref": "#/components/responses/401-error0"
+          },
+          "404":{
+            "$ref": "#/components/responses/404-error2"
           }
         }
       }
