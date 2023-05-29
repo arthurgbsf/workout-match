@@ -950,18 +950,23 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
+          },
           "404": {
-            "description": "There aren't workouts available. No user registered workouts.",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "No Workouts avaible."
-                    }
+                  "error01": {
+                    "$ref": "#/components/examples/404error1"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
                   }
                 }
               }
@@ -1023,39 +1028,44 @@
             }
           },
           "400": {
-            "description": "As a prerequisite that there is at least one exercise in the array of exercises. Exercises also need to be created or copied by the user.",
+            "$ref": "#/components/responses/400-error4"
+          },
+          "401": {
+            "description": "Unauthorized.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error - exercise required": {
-                    "$ref": "#/components/examples/validateExercisesError02"
+                  "error01": {
+                    "$ref": "#/components/examples/401error1"
                   },
-                  "error - uncopied exercises": {
-                    "$ref": "#/components/examples/validateExercisesError03"
+                  "error02": {
+                    "$ref": "#/components/examples/401error2"
+                  },
+                  "error03": {
+                    "$ref": "#/components/examples/401error3"
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "The user, exercises and workout are checked during the request.",
+            "description":"Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error - user not found": {
-                    "$ref": "#/components/examples/getUserByIdAndCheck"
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
                   },
-                  "error - exercises not found": {
-                    "$ref": "#/components/examples/validateExercisesError01"
-                  },
-                  "error - workout not found": {
-                    "$ref": "#/components/examples/setRefWorkoutInExercise"
+                  "error02": {
+                    "$ref": "#/components/examples/400error2"
                   }
                 }
               }
@@ -1106,10 +1116,10 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400-ObjectIdCheck"
+            "$ref": "#/components/responses/400-error1"
           },
           "404": {
-            "$ref": "#/components/responses/404-getWorkoutByIdAndCheck"
+            "$ref": "#/components/responses/404-error0"
           }
         }
       },
@@ -1128,7 +1138,7 @@
         },
         "responses": {
           "400": {
-            "description": "Id passed as parameter is invalid or training has not been updated. In the situation of updating exercises, errors related to the exercise may occur.",
+            "description":"Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1136,27 +1146,21 @@
                   "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error - invalid id": {
-                    "$ref": "#/components/examples/invalid-id"
+                  "error01": {
+                    "$ref": "#/components/examples/400error1"
                   },
-                  "error - not updated": {
-                    "$ref": "#/components/examples/not-updated"
-                  },
-                  "error - exercise required": {
-                    "$ref": "#/components/examples/validateExercisesError02"
-                  },
-                  "error - uncopied exercises": {
-                    "$ref": "#/components/examples/validateExercisesError03"
+                  "error02": {
+                    "$ref": "#/components/examples/400error2"
                   }
                 }
               }
             }
           },
           "401": {
-            "$ref": "#/components/responses/401-ifParamIdIsUserIdCheck"
+            "$ref":"#/components/responses/401-error0"
           },
           "404": {
-            "description": "Exercises or Workout not found in database.",
+            "description":"Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1164,15 +1168,11 @@
                   "$ref": "#/components/schemas/Message"
                 },
                 "examples": {
-                  "error - exercise not found": {
-                    "value": {
-                      "message": "Exercises not found."
-                    }
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
                   },
-                  "error - workout not found": {
-                    "value": {
-                      "message": "Workout not found."
-                    }
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
                   }
                 }
               }
@@ -1209,28 +1209,46 @@
             }
           },
           "400": {
-            "description": "Id passed as parameter is invalid or the exercise wasn't deleted.",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object"
                 },
                 "examples": {
-                  "error - invalid id": {
-                    "$ref": "#/components/examples/invalid-id"
+                  "error0": {
+                    "$ref": "#/components/examples/400error0"
                   },
-                  "error - not deleted": {
-                    "$ref": "#/components/examples/not-deleted"
+                  "error01": {
+                    "$ref": "#/components/examples/400error1"
+                  },
+                  "error03": {
+                    "$ref": "#/components/examples/400error3"
                   }
                 }
               }
             }
           },
           "401": {
-            "$ref": "#/components/responses/401-ifParamIdIsUserIdCheck"
+            "$ref": "#/components/responses/401-error0"
           },
           "404": {
-            "$ref": "#/components/responses/404-getWorkoutByIdAndCheck"
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -1263,10 +1281,45 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400-ObjectIdCheck"
+            "description":"Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "error01": {
+                    "$ref": "#/components/examples/400error1"
+                  },
+                  "error04": {
+                    "$ref": "#/components/examples/400error4"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref":"#/components/responses/401-error0"
           },
           "404": {
-            "$ref": "#/components/responses/404-getWorkoutByIdAndCheck"
+            "description":"Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "error0": {
+                    "$ref": "#/components/examples/404error0"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1835,21 +1888,6 @@
       "419error0": {
         "value": {
           "message": "Authentication Timeout."
-        }
-      },
-      "invalid-id": {
-        "value": {
-          "message": "Invalid Id."
-        }
-      },
-      "not-updated": {
-        "value": {
-          "message": "Wasn't updated."
-        }
-      },
-      "not-deleted": {
-        "value": {
-          "message": "Wasn't deleted."
         }
       },
       "workouts": {
