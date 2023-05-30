@@ -26,44 +26,11 @@
           "Auth"
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "user": {
-                  "value": {
-                    "email": "joao@example.com",
-                    "password": "123"
-                  }
-                }
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/auth-login"
         },
         "responses": {
           "200": {
-            "description": "An user's 1 hour authorization token.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "examples": {
-                  "token": {
-                    "value": {
-                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ3ZDljOTcxOTkyMjVmYTNmNjRkYmYiLCJlbWFpbCI6ImpvYW9AZXhhbXBsZS5jb20iLCJpYXQiOjE2ODI0MzExNTMsImV4cCI6MTY4MjQzNDc1M30.rtOo35iXZGI_GjBt589o4dZ6vquDAyF8pmoyKRa-YTY"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-login"
           },
           "401": {
             "$ref": "#/components/responses/401-error0"
@@ -73,49 +40,16 @@
     },
     "/auth/forget_password": {
       "post": {
-        "description": "Route for authenticate an user.",
+        "description": "Route to request a temporary password. The password is sent to the user's email, witch is only valid for 15 min.",
         "tags": [
           "Auth"
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "user": {
-                  "value": {
-                    "email": "joao@example.com",
-                    "password": "123"
-                  }
-                }
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/auth-forget-password"
         },
         "responses": {
           "200": {
-            "description": "An user's 1 hour authorization token.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "examples": {
-                  "token": {
-                    "value": {
-                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ3ZDljOTcxOTkyMjVmYTNmNjRkYmYiLCJlbWFpbCI6ImpvYW9AZXhhbXBsZS5jb20iLCJpYXQiOjE2ODI0MzExNTMsImV4cCI6MTY4MjQzNDc1M30.rtOo35iXZGI_GjBt589o4dZ6vquDAyF8pmoyKRa-YTY"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-forget-password"
           },
           "400": {
             "description": "Bad Request.",
@@ -144,49 +78,16 @@
     },
     "/auth/change_password": {
       "post": {
-        "description": "Route for authenticate an user.",
+        "description": "Route to change password from temporary password.",
         "tags": [
           "Auth"
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "user": {
-                  "value": {
-                    "email": "joao@example.com",
-                    "password": "123"
-                  }
-                }
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/auth-change-password"
         },
         "responses": {
           "200": {
-            "description": "An user's 1 hour authorization token.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "examples": {
-                  "token": {
-                    "value": {
-                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ3ZDljOTcxOTkyMjVmYTNmNjRkYmYiLCJlbWFpbCI6ImpvYW9AZXhhbXBsZS5jb20iLCJpYXQiOjE2ODI0MzExNTMsImV4cCI6MTY4MjQzNDc1M30.rtOo35iXZGI_GjBt589o4dZ6vquDAyF8pmoyKRa-YTY"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-change-password"
           },
           "400": {
             "description": "Bad Request.",
@@ -249,7 +150,7 @@
                 "schema": {
                   "type": "object",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/Users"
                   }
                 },
                 "examples": {
@@ -264,8 +165,27 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/401-error0"
+          },
           "404": {
-            "$ref": "#/components/responses/404-error1"
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                },
+                "examples": {
+                  "error01": {
+                    "$ref": "#/components/examples/404error1"
+                  },
+                  "error02": {
+                    "$ref": "#/components/examples/404error2"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1341,6 +1261,24 @@
           },
           "password": {
             "type": "string"
+          },
+          "temporaryPassword": {
+            "type": "string"
+          },
+          "temporaryPasswordExpiresAt": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "myCreatedWorkouts": {
+            "type": "array"
+          },
+          "myCreatedExercises": {
+            "type": "array"
           }
         }
       },
@@ -1482,6 +1420,66 @@
       }
     },
     "responses": {
+      "200-login": {
+        "description": "An user's 1 hour authorization token.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              }
+            },
+            "examples": {
+              "response": {
+                "$ref": "#/components/examples/token-response"
+              }
+            }
+          }
+        }
+      },
+      "200-forget-password":{
+        "description": "A message indicating that the email with the temporary password has been sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                      "$ref": "#/components/examples/forget-password-response"
+                  }
+                }
+              }
+            }
+      },
+      "200-change-password":{
+        "description": "A message indicating the password was successfully changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "$ref": "#/components/examples/change-password-response"
+                  }
+                }
+              }
+            }
+      },
       "400-error0": {
         "description": "Bad Request.",
         "content": {
@@ -1724,6 +1722,48 @@
       }
     },
     "requestBodies": {
+      "auth-login":{
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            },
+            "examples": {
+              "user": {
+                "$ref": "#/components/examples/user-login"
+              }
+            }
+          }
+        }
+      },
+      "auth-forget-password":{
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            },
+            "examples": {
+              "user": {
+                  "$ref": "#/components/examples/user-forget-password"
+              }
+            }
+          }
+        }
+      },
+      "auth-change-password":{
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            },
+            "examples": {
+              "user": {
+                "$ref": "#/components/examples/user-change-password" 
+              }
+            }
+          }
+        }
+      },
       "exerciseUpdateExamples": {
         "content": {
           "application/json": {
@@ -1888,6 +1928,57 @@
       "419error0": {
         "value": {
           "message": "Authentication Timeout."
+        }
+      },
+      "token-response": {
+        "value": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDQ3ZDljOTcxOTkyMjVmYTNmNjRkYmYiLCJlbWFpbCI6ImpvYW9AZXhhbXBsZS5jb20iLCJpYXQiOjE2ODI0MzExNTMsImV4cCI6MTY4MjQzNDc1M30.rtOo35iXZGI_GjBt589o4dZ6vquDAyF8pmoyKRa-YTY"
+        }
+      },
+      "user-login":{
+        "value":{
+          "email": "marie-example@example.com",
+				  "password":"123"
+        }
+      },
+      "user-forget-password":{
+        "value":{
+          "email": "marie-example@example.com"
+        }
+      },
+      "forget-password-response":{
+        "value":{
+          "message": "Email successfully sent."
+        }
+      },
+      "user-change-password":{
+        "value":{
+          "email": "marie-example@example.com",
+          "temporaryPassword": "f84125710306ed2bee0c",
+          "password": "abc"
+        }
+      },
+      "change-password-response":{
+        "value":{
+          "message": "Password successfully changeded."
+        }
+      },
+      "user-john-response":{
+        "value":{
+          "_id": "645db67a6fa1a3866bfb096d",
+          "name": "john Example",
+          "email": "john-example@example.com",
+          "myCreatedWorkouts": [],
+          "myCreatedExercises": []
+        }
+      },
+      "user-peter-response":{
+        "value":{
+          "_id": "645db67a6fa1a3866bfb096d",
+          "name": "john Example",
+          "email": "john-example@example.com",
+          "myCreatedWorkouts": [],
+          "myCreatedExercises": []
         }
       },
       "workouts": {
