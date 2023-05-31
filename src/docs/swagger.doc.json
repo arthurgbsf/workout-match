@@ -144,26 +144,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Users"
-                  }
-                },
-                "examples": {
-                  "users": {
-                    "value": {
-                      "_id": "6447d9c97199225fa3f64dbf",
-                      "name": "João da Silva",
-                      "email": "joao@example.com"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-get-users"  
           },
           "401": {
             "$ref": "#/components/responses/401-error0"
@@ -214,26 +195,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                },
-                "examples": {
-                  "users": {
-                    "value": {
-                      "_id": "6447d9c97199225fa3f64dbf",
-                      "name": "João da Silva",
-                      "email": "joao@example.com"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-get-user"
           },
           "400": {
             "$ref": "#/components/responses/400-error1"
@@ -251,41 +213,11 @@
           "User"
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "user": {
-                  "value": {
-                    "name": "João da Silva",
-                    "email": "joao@example.com",
-                    "password": "123"
-                  }
-                }
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/user-create"
         },
         "responses": {
           "201": {
-            "description": "User created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "User created."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-post-user"
           },
           "409": {
             "$ref": "#/components/responses/409-error1"
@@ -1480,6 +1412,63 @@
               }
             }
       },
+      "200-get-users":{
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Users"
+              }
+            },
+            "examples": {
+              "users":{
+                "$ref": "#/components/examples/users-response"
+              },
+              "user":{
+                "$ref": "#/components/examples/user-peter-response"
+              }
+            }
+          }
+        }
+      },
+      "200-get-user":{
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "examples": {
+              "user": {
+                "$ref": "#/components/examples/user-peter-response"
+              }
+            }
+          }
+        }
+      },
+      "200-post-user":{
+        "description": "User created.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "menssage": {
+                "value": {
+                  "menssage": "User created."
+                }
+              }
+            }
+          }
+        }
+      },
       "400-error0": {
         "description": "Bad Request.",
         "content": {
@@ -1764,6 +1753,20 @@
           }
         }
       },
+      "user-create":{
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            },
+            "examples": {
+              "user": {
+                "$ref": "#/components/examples/user-create"
+              }
+            }
+          }
+        }
+      },
       "exerciseUpdateExamples": {
         "content": {
           "application/json": {
@@ -1963,23 +1966,38 @@
           "message": "Password successfully changeded."
         }
       },
-      "user-john-response":{
-        "value":{
-          "_id": "645db67a6fa1a3866bfb096d",
-          "name": "john Example",
-          "email": "john-example@example.com",
-          "myCreatedWorkouts": [],
-          "myCreatedExercises": []
-        }
+      "users-response":{
+        "value":[
+          {"_id": "645db67a6fa1a3866bfb096d",
+            "name": "john Example",
+            "email": "john-example@example.com",
+            "myCreatedWorkouts": [],
+            "myCreatedExercises": []
+          },
+          {"_id": "645db67a6fa1a3866bfb096d",
+            "name": "peter Example",
+            "email": "peter-example@example.com",
+            "myCreatedWorkouts": [],
+            "myCreatedExercises": []
+          }
+        ]
       },
       "user-peter-response":{
         "value":{
           "_id": "645db67a6fa1a3866bfb096d",
-          "name": "john Example",
-          "email": "john-example@example.com",
+          "name": "peter Example",
+          "email": "peter-example@example.com",
           "myCreatedWorkouts": [],
           "myCreatedExercises": []
         }
+      },
+      "user-create":{
+        "value":{
+          "name": "Marie Example",
+          "email": "marie-example@example.com",
+				  "password":"123"
+        }
+
       },
       "workouts": {
         "value": [
