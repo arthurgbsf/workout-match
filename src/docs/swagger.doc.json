@@ -235,58 +235,11 @@
           }
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "Update user": {
-                  "value": {
-                    "name": "João da Silva Barbosa",
-                    "email": "joaobarbosa@example.com",
-                    "password": "123456"
-                  }
-                },
-                "Update user email": {
-                  "value": {
-                    "email": "joaobarbosa@example.com"
-                  }
-                },
-                "Update user password": {
-                  "value": {
-                    "password": "123456"
-                  }
-                },
-                "Update user name": {
-                  "value": {
-                    "name": "João da Silva Barbosa"
-                  }
-                }
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/update-user"
         },
         "responses": {
           "200": {
-            "description": "User updated.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Message"
-                  }
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "User updated."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-update-user"
           },
           "400": {
             "$ref": "#/components/responses/400-error2"
@@ -330,24 +283,7 @@
         ],
         "responses": {
           "200": {
-            "description": "The user was deleted.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Message"
-                  }
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "The user was deleted."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-delete-user"
           },
           "400": {
            "$ref": "#/components/responses/400-error3"
@@ -361,7 +297,7 @@
         }
       }
     },
-    "/exercises": {
+    "/training-data/exercises": {
       "get": {
         "parameters": [
           {
@@ -371,7 +307,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "Optional. Pass 'user = true' to get the logged user exercises."
+            "description": "Optional. Pass 'user = true' to get the logged user exercises.Exercise copies appear here."
           }
         ],
         "description": "Route to get all users exercises registered. Exercises copied by an user not appear in this request.",
@@ -385,41 +321,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Exercises"
-                  }
-                },
-                "examples": {
-                  "exercises": {
-                    "value": [
-                      {
-                        "_id": "644a7d690ff85088d51fcb4c",
-                        "exercise": "Push ups",
-                        "sets": "5",
-                        "reps": "15",
-                        "type": "push",
-                        "createdBy": "644a7d0d0ff85088d51fcb49",
-                        "createdAt": "27/04/2023 às 10:49:29"
-                      },
-                      {
-                        "_id": "644a7db70ff85088d51fcb52",
-                        "exercise": "Air Squat",
-                        "sets": "3",
-                        "reps": "8",
-                        "type": "Legs",
-                        "createdBy": "644a7d0d0ff85088d51fcb49",
-                        "createdAt": "27/04/2023 às 10:50:47"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-get-exercises"
           },
           "401": {
             "$ref": "#/components/responses/401-error0"
@@ -446,7 +348,7 @@
         }
       }
     },
-    "/exercises/exercise/{id}": {
+    "/training-data/exercises/exercise/{id}": {
       "parameters": [
         {
           "in": "path",
@@ -470,31 +372,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Exercise"
-                  }
-                },
-                "examples": {
-                  "exercises": {
-                    "value": {
-                      "_id": "644aac5a0756b40273d69ac0",
-                      "exercise": "Australian Pull ups",
-                      "sets": "5",
-                      "reps": "15",
-                      "type": "pull",
-                      "createdBy": "644a7d0d0ff85088d51fcb49",
-                      "createdAt": "23/04/2023 às 10:23:29",
-                      "inWorkouts": []
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-get-exercise"
           },
           "400": {
             "$ref": "#/components/responses/400-error1"
@@ -515,26 +393,11 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/exerciseUpdateExamples"
+          "$ref": "#/components/requestBodies/update-exercise"
         },
         "responses": {
           "200": {
-            "description": "Exercise updated with success.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Exercise updated."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-update-exercise"
           },
           "400": {
             "description":"Bad Request.",
@@ -591,21 +454,8 @@
         ],
         "responses": {
           "200": {
-            "description": "Exercise deleted with success.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "The exercise was deleted with success."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-delete-exercise"
+            
           },
           "400": {
             "description": "Bad Request.",
@@ -660,21 +510,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Copied with success.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Copied with success."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-copy-exercise"
           },
           "400": {
             "$ref": "#/components/responses/400-error1"
@@ -703,7 +539,7 @@
         }
       }
     },
-    "/exercises/exercise": {
+    "/training-data/exercises/exercise": {
       "post": {
         "description": "Route to create an enxercise.",
         "tags": [
@@ -715,41 +551,12 @@
           }
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Exercise"
-              },
-              "examples": {
-                "exercise": {
-                  "value": {
-                    "exercise": "Pull up",
-                    "sets": "5",
-                    "reps": "10",
-                    "type": "pull"
-                  }
-                }
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/create-exercise"
         },
         "responses": {
           "201": {
-            "description": "The request was successful. The exercise was created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Exercise created."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/201-create-exercise"
+            
           },
           "400":{
             "$ref": "#/components/responses/400-error4"
@@ -763,7 +570,7 @@
         }
       }
     },
-    "/workouts": {
+    "/training-data/workouts": {
       "get": {
         "parameters": [
           {
@@ -787,20 +594,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Workouts"
-                },
-                "examples": {
-                  "workouts": {
-                    "$ref": "#/components/examples/workouts"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-get-workouts"
           },
           "401": {
             "$ref": "#/components/responses/401-error0"
@@ -827,7 +621,7 @@
         }
       }
     },
-    "/workouts/workout": {
+    "/training-data/workouts/workout": {
       "post": {
         "description": "Route to create an workout.",
         "tags": [
@@ -839,45 +633,11 @@
           }
         ],
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              },
-              "examples": {
-                "workout": {
-                  "value": {
-                    "workout": "Full Body Basic",
-                    "level": "Intermediate",
-                    "exercises": [
-                      "644a87ae01fbb12d48cdc459",
-                      "644a87ae01fbb12d48cdc45b",
-                      "644a87ae01fbb12d48cdc45e"
-                    ]
-                  }
-                }
-              }
-            }
-          }
+         "$ref": "#/components/requestBodies/create-workout"
         },
         "responses": {
           "201": {
-            "description": "The request was successful. The workout was created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/Message"
-                },
-                "examples": {
-                  "menssage": {
-                    "value": {
-                      "menssage": "Workout created."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/201-create-workout"   
           },
           "400": {
             "$ref": "#/components/responses/400-error4"
@@ -926,7 +686,7 @@
         }
       }
     },
-    "/workouts/{id}": {
+    "/training-data/workouts/{id}": {
       "parameters": [
         {
           "in": "path",
@@ -950,22 +710,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Ok",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/Workout"
-                  }
-                },
-                "examples": {
-                  "workout": {
-                    "$ref": "#/components/examples/workout"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-get-workout"
           },
           "400": {
             "$ref": "#/components/responses/400-error1"
@@ -976,7 +721,7 @@
         }
       },
       "put": {
-        "description": "Route to update an workout by Id. It is possible to add or remove exercises, including the id in the exercises array or removing the id.",
+        "description": "Route to update an workout by Id. It is possible to add or remove exercises, including the id in the addExercises array or in the removeExercises to remove.",
         "tags": [
           "Workouts"
         ],
@@ -986,9 +731,12 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/workoutUpdateExamples"
+          "$ref": "#/components/requestBodies/update-workout"
         },
         "responses": {
+          "200":{
+            "$ref": "#/components/responses/200-update-workout"
+          },
           "400": {
             "description":"Bad Request.",
             "content": {
@@ -1044,21 +792,8 @@
         ],
         "responses": {
           "200": {
-            "description": "Workout deleted with success.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "The workout was deleted with success."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-delete-workout"
+            
           },
           "400": {
             "description": "Bad Request.",
@@ -1116,21 +851,8 @@
         ],
         "responses": {
           "200": {
-            "description": "Copied with success.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                },
-                "examples": {
-                  "message": {
-                    "value": {
-                      "message": "Copied with success."
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/200-copy-workout"
+            
           },
           "400": {
             "description":"Bad Request.",
@@ -1271,7 +993,7 @@
           "$ref": "#/components/schemas/Exercise"
         }
       },
-      "Workout-exercise-type-array-of-strings": {
+      "Workout Put Request": {
         "type": "object",
         "properties": {
           "_id": {
@@ -1295,7 +1017,13 @@
           "copiedWorkoutId": {
             "type": "string"
           },
-          "exercises": {
+          "addExercises:": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "removeExercises": {
             "type": "array",
             "items": {
               "type": "string"
@@ -1463,6 +1191,255 @@
               "menssage": {
                 "value": {
                   "menssage": "User created."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-update-user":{
+        "description": "User updated.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/components/schemas/Message"
+              }
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "User updated."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-delete-user":{
+        "description": "The user was deleted.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/components/schemas/Message"
+              }
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "The user was deleted."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-get-exercises":{
+        "description": "Ok.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Exercises"
+              }
+            },
+            "examples": {
+              "exercises":{
+                "$ref": "#/components/examples/exercises-response"
+              }
+            }
+          }
+        }
+      },
+      "200-get-exercise":{
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/components/schemas/Exercise"
+              }
+            },
+            "examples": {
+              "exercise":{
+                "$ref": "#/components/examples/exercise-response"
+              }
+            }
+          }
+        }
+      },
+      "200-update-exercise":{
+        "description": "Exercise updated with success.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "Exercise updated."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-delete-exercise":{
+        "description": "Exercise deleted with success.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "The exercise was deleted with success."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-copy-exercise":{
+        "description": "Copied with success.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "Copied with success."
+                }
+              }
+            }
+          }
+        }
+      },
+      "201-create-exercise":{
+        "description": "The request was successful. The exercise was created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "examples": {
+                "message": {
+                  "value": {
+                    "message": "Exercise created."
+                  }
+                }
+              }
+            }
+          }
+      },
+      "200-get-workouts":{
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Workouts"
+            },
+            "examples": {
+              "workouts": {
+                "$ref": "#/components/examples/workouts-response"
+              }
+            }
+          }
+        }
+      },
+      "201-create-workout":{
+        "description": "The request was successful. The workout was created.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "menssage": {
+                "value": {
+                  "menssage": "Workout created."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-get-workout":{
+        "description": "Ok",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/components/schemas/Workout"
+              }
+            },
+            "examples": {
+              "workout": {
+                "$ref": "#/components/examples/workout-response"
+              }
+            }
+          }
+        }
+      },
+      "200-delete-workout":{
+        "description": "Workout deleted with success.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "The workout was deleted with success."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-copy-workout":{
+        "description": "Copied with success.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object"
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "Copied with success."
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-update-workout":{
+        "description": "Workout updated with success.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/Message"
+            },
+            "examples": {
+              "message": {
+                "value": {
+                  "message": "Workout updated."
                 }
               }
             }
@@ -1767,90 +1744,104 @@
           }
         }
       },
-      "exerciseUpdateExamples": {
+      "update-user":{
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
+            },
+            "examples": {
+              "update user": {
+                "$ref": "#/components/examples/update-user"
+              },
+              "update user email": {
+                "$ref": "#/components/examples/update-user-email"
+              },
+              "update user password": {
+                "$ref": "#/components/examples/update-user-password"
+              },
+              "update user name": {
+                "$ref": "#/components/examples/update-user-name"
+              }
+            }
+          }
+        }
+      },
+      "update-exercise": {
         "content": {
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/Exercise"
             },
             "examples": {
-              "update": {
-                "value": {
-                  "exercise": "Deadlift",
-                  "sets": "8",
-                  "reps": "10",
-                  "type": "Fullbody"
-                }
+              "complete update": {
+                "$ref": "#/components/examples/update-exercise"
               },
-              "exercise-update": {
-                "value": {
-                  "exercise": "Deadlift"
-                }
+              "update exercise": {
+                "$ref": "#/components/examples/update-exercise-title"
               },
-              "sets-update": {
-                "value": {
-                  "sets": "8"
-                }
+              "update sets": {
+                "$ref": "#/components/examples/update-exercise-sets"
               },
-              "reps-update": {
-                "value": {
-                  "reps": "10"
-                }
+              "update reps": {
+                "$ref": "#/components/examples/update-exercise-reps"
               },
-              "type-update": {
-                "value": {
-                  "type": "Fullbody"
-                }
+              "update type": {
+                "$ref": "#/components/examples/update-exercise-type"
               }
             }
           }
         }
       },
-      "workoutUpdateExamples": {
+      "create-exercise":{
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/Workout-exercise-type-array-of-strings"
+              "$ref": "#/components/schemas/Exercise"
             },
             "examples": {
-              "update": {
-                "value": {
-                  "workout": "Full Body Basic",
-                  "level": "Intermediate",
-                  "exercises": [
-                    "644a87ae01fbb12d48cdc459",
-                    "644a87ae01fbb12d48cdc45b",
-                    "644a87ae01fbb12d48cdc45e"
-                  ]
-                }
+              "exercise": {
+               "$ref": "#/components/examples/create-exercise"
+              }
+            }
+          }
+        }
+      },
+      "create-workout":{
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Workout"
+            },
+            "examples": {
+              "workout": {
+                "$ref": "#/components/examples/create-workout"
+              }
+            }
+          }
+        }
+      },
+      "update-workout": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Workout Put Request"
+            },
+            "examples": {
+              "complete update": {
+                "$ref": "#/components/examples/update-workout"
               },
-              "workout-update": {
-                "value": {
-                  "workout": "Full Body"
-                }
+              "update workout": {
+                "$ref": "#/components/examples/update-workout-title"
               },
-              "level-update": {
-                "value": {
-                  "level": "Advanced"
-                }
+              "update level": {
+                "$ref": "#/components/examples/update-workout-level"
               },
-              "exercise-update-add": {
-                "value": {
-                  "exercises": [
-                    "644a87ae01fbb12d48cdc459",
-                    "644a87ae01fbb12d48cdc45b",
-                    "644a87ae01fbb12d48cdc45e",
-                    "644a87ae01fbb12d48cdc45b"
-                  ]
-                }
+              "add exercise": {
+                "$ref": "#/components/examples/workout-add-exercise"
               },
-              "exercise-update-remove": {
-                "value": {
-                  "exercises": [
-                    "644a87ae01fbb12d48cdc459",
-                    "644a87ae01fbb12d48cdc45b"
-                  ]
-                }
+              "remove exercise": {
+                "$ref": "#/components/examples/workout-remove-exercise"
               }
             }
           }
@@ -1999,7 +1990,111 @@
         }
 
       },
-      "workouts": {
+      "update-user": {
+        "value": {
+          "name": "Marie Example",
+          "email": "marie-example@example.com",
+          "password": "123456"
+        }
+      },
+      "update-user-email": {
+        "value": {
+          "email": "marieflower-example@example.com"
+        }
+      },
+      "update-user-password": {
+        "value": {
+          "password": "a1b2c3"
+        }
+      },
+      "update-user-name": {
+        "value": {
+          "name": "M. Flower Example"
+        }
+      },
+      "exercises-response": {
+        "value": [
+          {
+            "_id": "644a7d690ff85088d51fcb4c",
+            "exercise": "Push ups",
+            "sets": "5",
+            "reps": "15",
+            "type": "push",
+            "createdBy": "644a7d0d0ff85088d51fcb49",
+            "createdAt": "27/04/2023 às 10:49:29"
+          },
+          {
+            "_id": "644a7db70ff85088d51fcb52",
+            "exercise": "Air Squat",
+            "sets": "3",
+            "reps": "8",
+            "type": "Legs",
+            "createdBy": "644a7d0d0ff85088d51fcb49",
+            "createdAt": "27/04/2023 às 10:50:47"
+          }
+        ]
+      },
+      "exercise-response": {
+        "value": {
+          "_id": "644aac5a0756b40273d69ac0",
+          "exercise": "Australian Pull ups",
+          "sets": "5",
+          "reps": "15",
+          "type": "pull",
+          "createdBy": "644a7d0d0ff85088d51fcb49",
+          "createdAt": "23/04/2023 às 10:23:29",
+          "inWorkouts": []
+        }
+      },
+      "update-exercise": {
+        "value": {
+          "exercise": "Deadlift",
+          "sets": "8",
+          "reps": "10",
+          "type": "Fullbody"
+        }
+      },
+      "update-exercise-title": {
+        "value": {
+          "exercise": "Deadlift"
+        }
+      },
+      "update-exercise-sets": {
+        "value": {
+          "sets": "8"
+        }
+      },
+      "update-exercise-reps": {
+        "value": {
+          "reps": "10"
+        }
+      },
+      "update-exercise-type": {
+        "value": {
+          "type": "Fullbody"
+        }
+      },
+      "create-exercise":{
+        "value": {
+          "exercise": "Pull up",
+          "sets": "5",
+          "reps": "10",
+          "type": "pull"
+        }
+        
+      },
+      "create-workout":{
+        "value": {
+          "workout": "Full Body Basic",
+          "level": "Intermediate",
+          "exercises": [
+            "644a87ae01fbb12d48cdc459",
+            "644a87ae01fbb12d48cdc45b",
+            "644a87ae01fbb12d48cdc45e"
+          ]
+      }
+      },
+      "workouts-response": {
         "value": [
           {
             "_id": "644a7e1b0ff85088d51fcb5a",
@@ -2071,88 +2166,7 @@
           }
         ]
       },
-      "exercises-basic": {
-        "value": [
-          {
-            "_id": "644a7d960ff85088d51fcb4f",
-            "exercise": "Australian Pull ups",
-            "sets": "3",
-            "reps": "8",
-            "type": "Pull",
-            "createdAt": "27/04/2023 às 10:50:14"
-          },
-          {
-            "_id": "644a7db70ff85088d51fcb52",
-            "exercise": "Squats",
-            "sets": "3",
-            "reps": "8",
-            "type": "Legs",
-            "createdAt": "27/04/2023 às 10:50:47 "
-          },
-          {
-            "_id": "644a8c03e716fd14d9a552b0",
-            "exercise": "Push ups",
-            "sets": "3",
-            "reps": "8",
-            "type": "Push",
-            "createdAt": "27/04/2023 às 11:51:47 "
-          }
-        ]
-      },
-      "exercises-advanced": {
-        "value": [
-          {
-            "_id": "644a7d960ff85088d51fcb4g",
-            "exercise": "Pull ups",
-            "sets": "3",
-            "reps": "8",
-            "type": "Pull",
-            "createdAt": "27/04/2023 às 10:50:14"
-          },
-          {
-            "_id": "644a7db70ff85088d51fcb51",
-            "exercise": "Air Squats",
-            "sets": "3",
-            "reps": "8",
-            "type": "Legs",
-            "createdAt": "27/04/2023 às 10:50:47 "
-          },
-          {
-            "_id": "644a8c03e716fd14d9a552b2",
-            "exercise": "Dips",
-            "sets": "3",
-            "reps": "8",
-            "type": "Push",
-            "createdAt": "27/04/2023 às 11:51:47 "
-          }
-        ]
-      },
-      "getUserByIdAndCheck": {
-        "value": {
-          "message": "User not found."
-        }
-      },
-      "validateExercisesError01": {
-        "value": {
-          "message": "Exercises not found."
-        }
-      },
-      "validateExercisesError02": {
-        "value": {
-          "message": "Is required at least one exercise."
-        }
-      },
-      "validateExercisesError03": {
-        "value": {
-          "message": "You need to copy theses exercises first : '644a7d690ff85088d51fcb4c'"
-        }
-      },
-      "setRefWorkoutInExercise": {
-        "value": {
-          "message": "Workout not found."
-        }
-      },
-      "workout": {
+      "workout-response": {
         "value": {
           "_id": "644a7e1b0ff85088d51fcb5a",
           "workout": " Full Body Basic",
@@ -2186,6 +2200,44 @@
             }
           ],
           "updatedAt": "27/04/2023 às 13:23:17 "
+        }
+      },
+      "update-workout": {
+        "value": {
+          "workout": "Full Body Basic",
+          "level": "Intermediate",
+          "addExercises": [
+            "644a87ae01fbb12d48cdc459",
+            "644a87ae01fbb12d48cdc45b"
+          ],
+          "removeExercises":[
+            "644a87ae01fbb12d48cdc45e"
+          ]
+        }
+      },
+      "update-workout-title": {
+        "value": {
+          "workout": "Full Body"
+        }
+      },
+      "update-workout-level": {
+        "value": {
+          "level": "Advanced"
+        }
+      },
+      "workout-add-exercise": {
+        "value": {
+          "addExercises": [
+            "644a87ae01fbb12d48cdc459",
+            "644a87ae01fbb12d48cdc45b"
+          ]
+        }
+      },
+      "workout-remove-exercise": {
+        "value": {
+          "removeExercises": [
+            "644a87ae01fbb12d48cdc45e"
+          ]
         }
       }
     }
