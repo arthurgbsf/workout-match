@@ -686,7 +686,7 @@
         }
       }
     },
-    "/training-data/workouts/{id}": {
+    "/training-data/workouts/workout/{id}": {
       "parameters": [
         {
           "in": "path",
